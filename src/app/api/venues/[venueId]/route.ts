@@ -5,15 +5,16 @@
  */
 import { NextResponse } from "next/server";
 import { getVenueDetail } from "@/lib/venue-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
 const MAX_ID_LENGTH = 80;
 
-export async function GET(
+export const GET = apiRoute(async (
   _request: Request,
   { params }: { params: Promise<{ venueId: string }> }
-) {
+) => {
   const { venueId } = await params;
 
   if (!venueId || venueId.length > MAX_ID_LENGTH) {
@@ -46,4 +47,4 @@ export async function GET(
       "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
     },
   });
-}
+});

@@ -10,15 +10,16 @@ import { NextResponse } from "next/server";
 import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { getBlogPost } from "@/lib/blog-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
 const MAX_SLUG_LENGTH = 120;
 
-export async function GET(
+export const GET = apiRoute(async (
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
-) {
+) => {
   const { slug } = await params;
   const { searchParams } = new URL(request.url);
 
@@ -65,4 +66,4 @@ export async function GET(
       "Cache-Control": "public, max-age=600, stale-while-revalidate=1800",
     },
   });
-}
+});

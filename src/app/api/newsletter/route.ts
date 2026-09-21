@@ -4,9 +4,10 @@
  * Body: { email, locale?, source? }
  *
  * Responses: 201 { subscription } (new) · 200 { subscription } (existing /
- * re-subscribed) · 400 invalid payload · 500 venue not configured.
+ * re-subscribed) · 400 invalid payload · 503 data layer unavailable.
  */
 import { NextResponse } from "next/server";
+import { apiRoute } from "@/lib/api";
 import {
   subscribeToNewsletter,
   validateNewsletterInput,
@@ -14,7 +15,7 @@ import {
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
+export const POST = apiRoute(async (request: Request) => {
   let body: unknown;
   try {
     body = await request.json();
@@ -44,18 +45,15 @@ export async function POST(request: Request) {
       { subscription },
       { status: subscription.status === "subscribed" ? 201 : 200 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         error: {
           code: "SERVICE_UNAVAILABLE",
-          message:
-            error instanceof Error
-              ? error.message
-              : "Newsletter service unavailable.",
+          message: "Newsletter subscriptions aren't available in this environment yet.",
         },
       },
-      { status: 500 }
+      { status: 503 }
     );
   }
-}
+});

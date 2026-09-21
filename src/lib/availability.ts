@@ -22,6 +22,7 @@ import {
   type SlotSummary,
 } from "@/lib/schedule-service";
 import { summarizeSources, type DataSource } from "@/lib/ayo-sync";
+import { isDatabaseEnabled } from "@/db";
 import { isSlotPast, jakartaNow } from "@/lib/time";
 import type { SlotStatus } from "@/data/slots";
 
@@ -94,6 +95,9 @@ export type DatePreset = (typeof DATE_PRESETS)[number];
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+/** Venue id of the single venue this landing page represents. */
+const VENUE_ID = "get-padel-jakarta";
+
 /**
  * Resolves a `date` param that is either a preset (today | tomorrow |
  * weekend → next Saturday) or an explicit YYYY-MM-DD date.
@@ -160,6 +164,36 @@ export async function getAyoRange(): Promise<{
   return { from: row?.from ?? null, to: row?.to ?? null };
 }
 
+function fallbackVenueInfo(): VenueInfoDto {
+  return {
+    id: VENUE_ID,
+    name: "Get Padel Jakarta",
+    tagline: "Get Padel, Get Well",
+    courtOpenHour: 6,
+    courtCloseHour: 22,
+    sessionMinutes: 60,
+    bookingUrl: "https://ayo.co.id/v/get-padel-jakarta",
+  };
+}
+
+function unavailableResponse(
+  dateISO: string,
+  preset: DatePreset | undefined,
+  reason: NonNullable<AvailabilityResponse["reason"]>
+): AvailabilityResponse {
+  return {
+    venue: fallbackVenueInfo(),
+    date: dateISO,
+    ...(preset ? { preset } : {}),
+    dayType: getDayType(dateISO),
+    courts: [],
+    summary: summarizeSlots([]),
+    dataSource: "unavailable",
+    syncedAt: null,
+    reason,
+  };
+}
+
 export async function getSlotAvailability(
   dateParam: string,
   query: AvailabilityQuery = {}
@@ -167,6 +201,27 @@ export async function getSlotAvailability(
   const { dateISO, preset } = resolveDateParam(dateParam);
   const now = jakartaNow();
 
+  // A missing/unreachable database must not surface as a 500: the schedule is
+  // honestly reported as unavailable so the UI can point at the official
+  // booking channel.
+  if (!isDatabaseEnabled()) {
+    return unavailableResponse(dateISO, preset, "error");
+  }
+
+  try {
+    return await queryAvailability(dateISO, preset, query, now);
+  } catch (error) {
+    if (error instanceof AvailabilityQueryError) throw error;
+    return unavailableResponse(dateISO, preset, "error");
+  }
+}
+
+async function queryAvailability(
+  dateISO: string,
+  preset: DatePreset | undefined,
+  query: AvailabilityQuery,
+  now: ReturnType<typeof jakartaNow>
+): Promise<AvailabilityResponse> {
   const venueRows = await db
     .select()
     .from(schema.venues)

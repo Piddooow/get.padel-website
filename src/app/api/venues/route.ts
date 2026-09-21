@@ -9,12 +9,13 @@
  */
 import { NextResponse } from "next/server";
 import { listVenues } from "@/lib/venue-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
 const MAX_CITY_LENGTH = 60;
 
-export async function GET(request: Request) {
+export const GET = apiRoute(async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const cityParam = searchParams.get("city")?.trim() ?? "";
 
@@ -44,4 +45,4 @@ export async function GET(request: Request) {
       },
     }
   );
-}
+});

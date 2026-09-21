@@ -15,10 +15,11 @@ import {
   listEvents,
   type EventStatus,
 } from "@/lib/event-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request) {
+export const GET = apiRoute(async (request: Request) => {
   const { searchParams } = new URL(request.url);
 
   const localeParam = searchParams.get("locale") ?? routing.defaultLocale;
@@ -63,4 +64,4 @@ export async function GET(request: Request) {
       },
     }
   );
-}
+});

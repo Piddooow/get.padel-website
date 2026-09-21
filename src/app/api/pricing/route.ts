@@ -12,6 +12,7 @@
 import { NextResponse } from "next/server";
 import { discountPercent } from "@/lib/format";
 import { getRateCard } from "@/lib/schedule-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,7 @@ type DayType = (typeof DAY_TYPES)[number];
 const FIRST_HOUR = 6;
 const LAST_HOUR = 21;
 
-export async function GET(request: Request) {
+export const GET = apiRoute(async (request: Request) => {
   const { searchParams } = new URL(request.url);
 
   const dayParam = searchParams.get("day");
@@ -95,4 +96,4 @@ export async function GET(request: Request) {
       },
     }
   );
-}
+});

@@ -28,10 +28,10 @@ function badRequest(code: string, message: string) {
   return NextResponse.json({ error: { code, message } }, { status: 400 });
 }
 
-export async function GET(
+export const GET = apiRoute(async (
   request: Request,
   { params }: { params: Promise<{ venueId: string }> }
-) {
+) => {
   const { venueId } = await params;
   const { searchParams } = new URL(request.url);
 
@@ -116,4 +116,6 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+});
+
+import { apiRoute } from "@/lib/api";

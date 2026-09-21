@@ -6,10 +6,11 @@
  */
 import { NextResponse } from "next/server";
 import { getSiteConfig } from "@/lib/site-config-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export const GET = apiRoute(async () => {
   const config = await getSiteConfig();
 
   if (!config) {
@@ -29,4 +30,4 @@ export async function GET() {
       "Cache-Control": "public, max-age=600, stale-while-revalidate=1800",
     },
   });
-}
+});

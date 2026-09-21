@@ -10,10 +10,11 @@ import { NextResponse } from "next/server";
 import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { getTestimonials } from "@/lib/testimonial-service";
+import { apiRoute } from "@/lib/api";
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request) {
+export const GET = apiRoute(async (request: Request) => {
   const { searchParams } = new URL(request.url);
 
   const localeParam = searchParams.get("locale") ?? routing.defaultLocale;
@@ -36,4 +37,4 @@ export async function GET(request: Request) {
       "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
     },
   });
-}
+});
