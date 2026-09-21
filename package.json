@@ -43,9 +43,6 @@
     "tsx": "^4.23.15",
     "typescript": "^5"
   },
-  "engines": {
-    "node": "22.x"
-  },
   "allowScripts": {
     "esbuild@0.18.20": true,
     "esbuild@0.25.12": true,
