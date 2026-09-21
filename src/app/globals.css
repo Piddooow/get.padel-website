@@ -1,0 +1,208 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "../styles/kinetic-navigation.css";
+@import "../styles/page-transition.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-plus-jakarta);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-heading: var(--font-plus-jakarta);
+
+  /* ===== Brand palette — Get Padel (venue) ===== */
+  --color-gp-olive: var(--gp-olive);
+  --color-gp-rust: var(--gp-rust);
+  --color-gp-light: var(--gp-light);
+
+  /* ===== Brand palette — Race & Rally (coffee shop) ===== */
+  --color-rr-white: var(--rr-white);
+  --color-rr-soft: var(--rr-soft);
+  --color-rr-green: var(--rr-green);
+  --color-rr-mid: var(--rr-mid);
+  --color-rr-ink: var(--rr-ink);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* ===== Raw brand tokens (PRD §3.3) ===== */
+  --gp-olive: #343f29; /* Get Padel — primary */
+  --gp-rust: #8e4122; /* Get Padel — accent / CTA */
+  --gp-light: #e7e7e7; /* Get Padel — light background */
+
+  --rr-white: #fefefe; /* Race & Rally — main bg */
+  --rr-soft: #f4f4f4; /* Race & Rally — surface */
+  --rr-green: #074734; /* Race & Rally — primary */
+  --rr-mid: #395b3b; /* Race & Rally — secondary */
+  --rr-ink: #1e2920; /* Race & Rally — ink */
+
+  /* ===== shadcn theme mapped to the Get Padel palette ===== */
+  --background: var(--gp-light);
+  --foreground: var(--gp-olive);
+  --card: #fefefe;
+  --card-foreground: var(--gp-olive);
+  --popover: #fefefe;
+  --popover-foreground: var(--gp-olive);
+  --primary: var(--gp-rust);
+  --primary-foreground: var(--gp-light);
+  --secondary: var(--gp-olive);
+  --secondary-foreground: var(--gp-light);
+  --muted: #dcdcd6;
+  --muted-foreground: #5b6553;
+  --accent: #dbddd6;
+  --accent-foreground: var(--gp-olive);
+  --destructive: #b3402a;
+  --border: color-mix(in srgb, var(--gp-olive) 18%, transparent);
+  --input: color-mix(in srgb, var(--gp-olive) 18%, transparent);
+  --ring: var(--gp-rust);
+  --chart-1: var(--gp-rust);
+  --chart-2: var(--gp-olive);
+  --chart-3: #5b6553;
+  --chart-4: #a98a6b;
+  --chart-5: #dcdcd6;
+  --radius: 0.75rem;
+  --sidebar: #fefefe;
+  --sidebar-foreground: var(--gp-olive);
+  --sidebar-primary: var(--gp-rust);
+  --sidebar-primary-foreground: var(--gp-light);
+  --sidebar-accent: #dbddd6;
+  --sidebar-accent-foreground: var(--gp-olive);
+  --sidebar-border: color-mix(in srgb, var(--gp-olive) 18%, transparent);
+  --sidebar-ring: var(--gp-rust);
+}
+
+/* Special-price slot chips: simple, playful eye-catchers. */
+@keyframes gp-special-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+@keyframes gp-special-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(251 191 36 / 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgb(251 191 36 / 0.22);
+  }
+}
+
+.animate-gp-special-bounce {
+  animation: gp-special-bounce 1.6s ease-in-out infinite;
+}
+
+.animate-gp-special-glow {
+  animation: gp-special-glow 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gp-special-bounce,
+  .animate-gp-special-glow {
+    animation: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+  ::selection {
+    background-color: var(--gp-rust);
+    color: var(--gp-light);
+  }
+}
+
+/* ============================================================
+   Soft page entry — the document body fades in on first paint
+   via `@starting-style` (insertion-only, so it never fights the
+   GSAP page-transition curtain that handles route changes).
+   ============================================================ */
+body {
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@starting-style {
+  body {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
+
+/* Nav pill press feedback (hash items must never stay "active"). */
+@keyframes gp-nav-press {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.94);
+    background-color: rgb(255 255 255 / 0.16);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-gp-nav-press {
+  animation: gp-nav-press 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gp-nav-press {
+    animation: none;
+  }
+}

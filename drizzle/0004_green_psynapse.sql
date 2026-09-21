@@ -1,0 +1,1 @@
+ALTER TABLE `guest_orders` ADD `last_notified_at` integer;

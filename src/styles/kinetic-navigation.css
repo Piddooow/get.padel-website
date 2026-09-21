@@ -1,0 +1,438 @@
+/* ============================================================
+   Sterling Gate — Kinetic Navigation (Get Padel adaptation)
+   Palette: olive / rust / light — getpadel-information.md §0
+   ============================================================ */
+
+.kinetic-menu {
+  --k-ease: cubic-bezier(0.65, 0.05, 0, 1);
+  position: fixed;
+  inset: 0;
+  z-index: 45; /* below the site header (z-50) so the header stays usable */
+  pointer-events: none;
+}
+
+.nav-overlay-wrapper {
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: auto;
+}
+
+.nav-overlay-wrapper[data-nav="open"] {
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 29, 18, 0.55);
+  backdrop-filter: blur(4px);
+  visibility: hidden; /* animated with autoAlpha */
+}
+
+.menu-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  /* Width follows the content (menu labels / info text) instead of a fixed
+     split; caps keep it usable on tablets and phones. */
+  width: auto;
+  min-width: min(100%, 19rem);
+  max-width: min(100%, 44rem);
+  overflow: hidden;
+  color: var(--gp-light);
+  border-left: 1px solid rgba(231, 231, 231, 0.12);
+  border-radius: 1.5rem 0 0 1.5rem;
+  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.28);
+  will-change: transform;
+}
+
+/* ---------- sliding backdrop layers ---------- */
+.menu-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.backdrop-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.backdrop-layer.first {
+  background: #242c1a;
+}
+
+.backdrop-layer.second {
+  background: #2c3521;
+}
+
+.backdrop-layer.main {
+  background: var(--gp-olive);
+  background-image:
+    radial-gradient(120% 90% at 85% 10%, rgba(142, 65, 34, 0.18) 0%, transparent 55%),
+    radial-gradient(90% 70% at 10% 100%, rgba(231, 231, 231, 0.05) 0%, transparent 60%);
+}
+
+/* ---------- ambient hover shapes ---------- */
+.ambient-background-shapes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.bg-shape {
+  position: absolute;
+  width: 105%;
+  aspect-ratio: 1 / 1;
+  opacity: 0;
+}
+
+/* Revealed while its menu item is hovered (Elements are staged by GSAP). */
+.bg-shape.active {
+  opacity: 1;
+}
+
+.bg-shape-1 {
+  top: 4%;
+  right: -18%;
+}
+
+.bg-shape-2 {
+  right: 6%;
+  bottom: -16%;
+}
+
+.bg-shape-3 {
+  top: 8%;
+  left: 8%;
+}
+
+.bg-shape-4 {
+  top: 28%;
+  right: -10%;
+}
+
+.bg-shape-5 {
+  top: -14%;
+  right: 16%;
+}
+
+.bg-shape-6 {
+  bottom: -10%;
+  left: -6%;
+}
+
+.bg-shape-7 {
+  top: 12%;
+  left: 24%;
+}
+
+.bg-shape-8 {
+  bottom: 6%;
+  right: 18%;
+}
+
+.bg-shape-9 {
+  top: 4%;
+  left: -8%;
+}
+
+/* ---------- content ---------- */
+.menu-content-wrapper {
+  position: relative;
+  z-index: 2;
+  border-radius: inherit;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: clamp(5rem, 11vh, 7.5rem) clamp(1.25rem, 2.6vw, 2.25rem)
+    clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.menu-head {
+  margin-bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+}
+
+.menu-head-tagline {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(231, 231, 231, 0.6);
+}
+
+.menu-head-venue {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: rgba(231, 231, 231, 0.85);
+}
+
+/* ---------- nav list ---------- */
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.1rem, 0.9vh, 0.45rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-list-item {
+  /* Room for the hover shift (text moves 10px right) before clipping. */
+  padding-right: clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  max-width: 100%;
+  padding: 0.08em clamp(0.75rem, 2vw, 1.25rem) 0.08em 0;
+  color: var(--gp-light);
+  text-decoration: none;
+}
+
+.nav-link-index {
+  font-size: clamp(0.68rem, 1.1vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: rgba(231, 231, 231, 0.45);
+}
+
+.nav-link-text {
+  font-family: var(--font-plus-jakarta);
+  font-size: clamp(1.55rem, 5.2vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  transition:
+    color 0.35s var(--k-ease),
+    transform 0.45s var(--k-ease);
+}
+
+.nav-link:hover .nav-link-text,
+.nav-link:focus-visible .nav-link-text {
+  color: #ffffff;
+  transform: translateX(10px);
+}
+
+.nav-link-hover-bg {
+  position: absolute;
+  bottom: 0.02em;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gp-rust);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s var(--k-ease);
+}
+
+.nav-link:hover .nav-link-hover-bg,
+.nav-link:focus-visible .nav-link-hover-bg {
+  transform: scaleX(1);
+}
+
+.nav-link-external-icon {
+  width: 0.55em;
+  height: 0.55em;
+  color: rgba(231, 231, 231, 0.5);
+}
+
+/* ---------- venue info ---------- */
+/* Stretches to the panel width (border spans everything) but contributes
+   only a capped width to the panel's content-driven sizing. */
+.menu-info-block {
+  margin-top: auto;
+  padding-top: clamp(1.5rem, 4vh, 2.5rem);
+  border-top: 1px solid rgba(231, 231, 231, 0.16);
+}
+
+.menu-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 1.75rem;
+  max-width: 26rem;
+}
+
+.menu-info-title {
+  margin-bottom: 0.55rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(231, 231, 231, 0.55);
+}
+
+.menu-info-body {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: rgba(231, 231, 231, 0.85);
+}
+
+.menu-info-body a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(231, 231, 231, 0.25);
+  transition: border-color 0.3s var(--k-ease), color 0.3s var(--k-ease);
+}
+
+.menu-info-body a:hover,
+.menu-info-body a:focus-visible {
+  border-color: var(--gp-rust);
+  color: #ffffff;
+}
+
+.menu-info-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+}
+
+.menu-info-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid rgba(231, 231, 231, 0.25);
+  border-radius: 9999px;
+  color: rgba(231, 231, 231, 0.85);
+  transition: background-color 0.3s var(--k-ease), color 0.3s var(--k-ease);
+}
+
+.menu-info-socials a:hover,
+.menu-info-socials a:focus-visible {
+  background: rgba(231, 231, 231, 0.1);
+  color: #ffffff;
+}
+
+.menu-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.menu-foot-note {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(231, 231, 231, 0.55);
+}
+
+/* ---------- phones: fullscreen + device-relative type ---------- */
+@media (max-width: 767px) {
+  .menu-content {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .menu-content-wrapper {
+    padding: 5rem 1.4rem 1.6rem;
+  }
+
+  .nav-link-text {
+    font-size: clamp(1.85rem, 8.6vw, 2.6rem);
+  }
+
+  .nav-link-index {
+    font-size: clamp(0.7rem, 3vw, 0.85rem);
+  }
+
+  .menu-head-tagline {
+    letter-spacing: 0.24em;
+  }
+
+  .menu-info {
+    gap: 1.15rem 1.25rem;
+  }
+
+  .menu-info-body {
+    font-size: 0.8rem;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .nav-link-text,
+  .nav-link-hover-bg {
+    transition: none;
+  }
+}
+
+/* ============================================================
+   Header navbar — reference menu trigger (click me + Menu/Close)
+   ============================================================ */
+
+.nav-row__right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2.25rem;
+  padding: 0 0.85rem 0 1rem;
+  border: 1px solid rgba(231, 231, 231, 0.25);
+  border-radius: 9999px;
+  color: var(--gp-light);
+  cursor: pointer;
+}
+
+/* Two stacked labels; GSAP slides them up (reference text swap). */
+.menu-button-text {
+  position: relative;
+  display: block;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.menu-button-text .p-large {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.icon-wrap {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+}
+
+.menu-button-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Very small phones: keep the control row inside the viewport. */
+@media (max-width: 359px) {
+  .nav-close-btn {
+    gap: 0.45rem;
+    padding: 0 0.6rem 0 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-close-btn {
+    transition: none;
+  }
+}
