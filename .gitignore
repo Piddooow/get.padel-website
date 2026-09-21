@@ -8,7 +8,7 @@ next-env.d.ts
 *.tsbuildinfo
 
 # local database (created by `npm run db:migrate && npm run db:seed`)
-data/
+/data/
 
 # environment
 .env
