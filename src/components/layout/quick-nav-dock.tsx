@@ -22,7 +22,15 @@ export function QuickNavDock() {
   // Order per the mobile spec: Schedule → My Booking → Home → Profile
   // (Home sits in the middle of the row). Profile funnels through /masuk,
   // which immediately forwards signed-in visitors to their account page.
+  // Order per the latest mobile spec: Home → Schedule → My Booking → Profile.
+  // Profile funnels through /masuk, which forwards signed-in visitors to /akun.
   const items: NavItem[] = [
+    {
+      id: "home",
+      icon: <Home />,
+      label: t("home"),
+      href: `/${locale}`,
+    },
     {
       id: "schedule",
       icon: <CalendarDays />,
@@ -34,12 +42,6 @@ export function QuickNavDock() {
       icon: <CalendarCheck />,
       label: t("myBooking"),
       href: `/${locale}/akun`,
-    },
-    {
-      id: "home",
-      icon: <Home />,
-      label: t("home"),
-      href: `/${locale}`,
     },
     {
       id: "profile",

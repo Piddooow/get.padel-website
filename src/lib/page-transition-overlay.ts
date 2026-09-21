@@ -17,10 +17,12 @@ export const OVERLAY_ID = "gp-page-transition";
 /** Centered brand mark shown while the curtain covers the screen. */
 const LOGO_SRC = "/logo-getpadel.webp";
 
-export const PANEL_DURATION = 0.3;
-export const PANEL_STAGGER = 0.04;
-export const REVEAL_DELAY = 0.06;
-export const CONTENT_DURATION = 0.32;
+export const PANEL_DURATION = 0.4;
+export const PANEL_STAGGER = 0.03;
+export const REVEAL_DELAY = 0.08;
+/** Slightly quicker sweep out, so the whole transition lands at ~1.1s. */
+export const REVEAL_PANEL_DURATION = 0.35;
+export const CONTENT_DURATION = 0.4;
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(CustomEase);
@@ -227,7 +229,7 @@ function playCurtainOut(onComplete: () => void): gsap.core.Timeline {
     panels,
     {
       xPercent: 101,
-      duration: PANEL_DURATION,
+      duration: REVEAL_PANEL_DURATION,
       stagger: PANEL_STAGGER,
       ease: "main",
     },
