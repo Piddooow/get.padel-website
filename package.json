@@ -44,6 +44,15 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
+  },
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.16.2": true,
+    "unrs-resolver@1.12.2": true,
+    "fsevents@2.3.3": true
   }
 }
