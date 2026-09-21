@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import { HeaderProfile } from "@/components/auth/header-profile";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { WhatsAppIcon } from "@/components/icons";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -201,6 +202,7 @@ export function SiteHeader() {
             >
               <WhatsAppIcon className="size-4" />
             </a>
+            <HeaderProfile />
             <LanguageSwitcher className="inline-flex" />
             <ButtonLink
               href={bookHref}

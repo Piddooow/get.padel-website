@@ -126,7 +126,12 @@
     "errorDataWhatsapp": "That WhatsApp number looks invalid (e.g. 0811 8802 2770).",
     "loginGateTitle": "Sign in first to book a court",
     "loginGateBody": "After signing in you come straight back here and continue with your slot and details — nothing to redo.",
-    "loginGateSteps": "Pick a date → pick a slot → fill in details → pay"
+    "loginGateSteps": "Pick a date → pick a slot → fill in details → pay",
+    "loginDialogTitle": "Sign in to check slots",
+    "loginDialogBody": "Slots and bookings live in your account, so we need you signed in first. After logging in you come straight back to this step.",
+    "loginDialogCta": "Log in",
+    "loginDialogCancel": "Cancel",
+    "dialogClose": "Close"
   },
   "availability": {
     "titleToday": "Today's Slots",

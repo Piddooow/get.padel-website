@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { CalendarCheck, Search } from "lucide-react";
 import { UnavailableNotice } from "@/components/schedule/unavailable-notice";
+import { LoginRequiredDialog } from "@/components/auth/login-required-dialog";
+import { useSession } from "@/lib/session-client";
 import { Button } from "@/components/ui/button";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Input } from "@/components/ui/input";
@@ -75,6 +79,14 @@ export function BookingWidget({ defaultDate }: { defaultDate: string }) {
   const [time, setTime] = useState("18");
   const [duration, setDuration] = useState<number>(1);
   const [query, setQuery] = useState<SearchQuery | null>(null);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const { user, loaded: sessionLoaded } = useSession();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // Set when the visitor was sent to log in mid-search; the search resumes
+  // automatically once they come back signed in.
+  const resumeCheck = searchParams.get("check") === "1";
+  const [resumed, setResumed] = useState(false);
   const [result, setResult] = useState<{
     key: string;
     rows: SearchResult[];
@@ -152,9 +164,49 @@ export function BookingWidget({ defaultDate }: { defaultDate: string }) {
     );
   }
 
+  // The i18n pathname omits the locale; keep it for URLs we write ourselves.
+  const localizedPath = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
+
+  // Resume the interrupted Check Slot after a successful login.
+  useEffect(() => {
+    if (!resumeCheck || !sessionLoaded || !user || resumed) return;
+    // Deferred (like the rest of the codebase) so the resume never triggers a
+    // cascading render inside the effect itself.
+    const timer = window.setTimeout(() => {
+      const resumeDate = searchParams.get("date") ?? date;
+      const resumeHour = Number(searchParams.get("hour") ?? time);
+      const resumeDuration = Number(searchParams.get("duration") ?? duration);
+      const validDate = /^\d{4}-\d{2}-\d{2}$/.test(resumeDate) ? resumeDate : date;
+      const validDuration =
+        resumeDuration === 2 || resumeDuration === 3 ? resumeDuration : 1;
+      setResumed(true);
+      setDate(validDate);
+      setTime(String(resumeHour));
+      setDuration(validDuration);
+      setQuery({
+        date: validDate,
+        hour: Math.min(resumeHour, LAST_HOUR - (validDuration - 1)),
+        duration: validDuration,
+      });
+      // Drop the resume parameters so a reload starts clean.
+      window.history.replaceState(null, "", localizedPath);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [resumeCheck, resumed, searchParams, sessionLoaded, user, date, time, duration, localizedPath]);
+
+  const signInHref = `/${locale}/masuk?next=${encodeURIComponent(
+    `${localizedPath}?check=1&date=${date}&hour=${time}&duration=${duration}`
+  )}`;
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const hour = Math.min(Number(time), LAST_HOUR - (duration - 1));
+
+    // Login first — the visitor keeps their selection and resumes right after.
+    if (sessionLoaded && !user) {
+      setLoginDialogOpen(true);
+      return;
+    }
     setQuery({ date, hour, duration });
   }
 
@@ -217,6 +269,7 @@ export function BookingWidget({ defaultDate }: { defaultDate: string }) {
           <Button
             type="submit"
             size="lg"
+            disabled={searching}
             className="h-11 w-full rounded-full font-semibold"
           >
             <Search className="size-4" />
@@ -321,6 +374,12 @@ export function BookingWidget({ defaultDate }: { defaultDate: string }) {
       {!query && (
         <p className="mt-4 text-xs text-muted-foreground">{t("booking.note")}</p>
       )}
+
+      <LoginRequiredDialog
+        open={loginDialogOpen}
+        onClose={() => setLoginDialogOpen(false)}
+        signInHref={signInHref}
+      />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AlertTriangle } from "lucide-react";
+import { notifyAuthChanged } from "@/lib/session-client";
 import { cn } from "@/lib/utils";
 
 type Mode = "login" | "register";
@@ -83,6 +84,7 @@ export function AuthForm({
         return;
       }
 
+      notifyAuthChanged();
       router.push(nextPath || accountHref);
       router.refresh();
     } catch {

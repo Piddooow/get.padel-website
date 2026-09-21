@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
+import { notifyAuthChanged } from "@/lib/session-client";
 
 /** Signs out (revokes the session) and returns to the homepage. */
 export function LogoutButton({ homeHref }: { homeHref: string }) {
@@ -20,6 +21,7 @@ export function LogoutButton({ homeHref }: { homeHref: string }) {
         try {
           await fetch("/api/auth/logout", { method: "POST" });
         } finally {
+          notifyAuthChanged();
           router.push(homeHref);
           router.refresh();
         }
