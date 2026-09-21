@@ -77,6 +77,12 @@ export async function POST(request: Request) {
   const date = typeof source.date === "string" ? source.date : "";
   const startHour = Number(source.startHour);
   const durationHours = Number(source.durationHours ?? 1);
+  const rawContact = (source.contact ?? {}) as Record<string, unknown>;
+  const contact = {
+    name: typeof rawContact.name === "string" ? rawContact.name : undefined,
+    whatsapp:
+      typeof rawContact.whatsapp === "string" ? rawContact.whatsapp : undefined,
+  };
 
   if (!courtId || !date || !Number.isFinite(startHour)) {
     return NextResponse.json(
@@ -99,6 +105,7 @@ export async function POST(request: Request) {
       date,
       startHour,
       durationHours,
+      contact,
       finishUrl: `${origin}/id/akun?paid=1`,
     });
   } catch {

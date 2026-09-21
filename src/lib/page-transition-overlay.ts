@@ -17,10 +17,10 @@ export const OVERLAY_ID = "gp-page-transition";
 /** Centered brand mark shown while the curtain covers the screen. */
 const LOGO_SRC = "/logo-getpadel.webp";
 
-export const PANEL_DURATION = 0.5;
-export const PANEL_STAGGER = 0.08;
-export const REVEAL_DELAY = 0.08;
-export const CONTENT_DURATION = 0.5;
+export const PANEL_DURATION = 0.3;
+export const PANEL_STAGGER = 0.04;
+export const REVEAL_DELAY = 0.06;
+export const CONTENT_DURATION = 0.32;
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(CustomEase);
@@ -44,6 +44,10 @@ export type TransitionReason = "navigation" | "refresh";
 let state: TransitionState = "idle";
 let transitionReason: TransitionReason = "navigation";
 let safetyTimer: number | null = null;
+/** True once the curtain has fully covered the viewport. */
+let coverDone = true;
+/** Set when a reveal was requested before the cover finished. */
+let revealPending = false;
 
 export function isTransitionBusy(): boolean {
   return state !== "idle";
@@ -68,8 +72,16 @@ export function beginTransition(
   return true;
 }
 
-/** Reveals the new page (idempotent while the reveal is already running). */
+/**
+ * Reveals the new page. If the curtain is still sweeping in, the reveal is
+ * queued and starts the moment the cover completes — so the route fetch and
+ * the animation run in parallel instead of one after the other.
+ */
 export function revealTransition(): void {
+  if (!coverDone) {
+    revealPending = true;
+    return;
+  }
   if (state === "idle" || state === "revealing") return;
   if (safetyTimer) {
     window.clearTimeout(safetyTimer);
@@ -136,6 +148,9 @@ export function playCurtainIn(): gsap.core.Tween {
   gsap.set(overlay, { display: "block" });
   gsap.set(logo, { opacity: 0, y: 10, scale: 0.96 });
 
+  coverDone = false;
+  revealPending = false;
+
   const timeline = gsap.fromTo(
     panels,
     { xPercent: 101 },
@@ -144,6 +159,13 @@ export function playCurtainIn(): gsap.core.Tween {
       duration: PANEL_DURATION,
       stagger: PANEL_STAGGER,
       ease: "main",
+      onComplete: () => {
+        coverDone = true;
+        if (revealPending) {
+          revealPending = false;
+          revealTransition();
+        }
+      },
     }
   );
 

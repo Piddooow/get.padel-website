@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { InstagramIcon, TikTokIcon, WhatsAppIcon } from "@/components/icons";
 import { site, whatsappLink } from "@/data/site";
@@ -429,7 +430,7 @@ export function SterlingGateKineticNavigation({
                     className="menu-list-item"
                     data-shape={link.shape}
                   >
-                    <a
+                    <Link
                       href={link.href}
                       onClick={handleLinkClick}
                       className="nav-link"
@@ -448,7 +449,7 @@ export function SterlingGateKineticNavigation({
                         />
                       )}
                       <span className="nav-link-hover-bg" aria-hidden="true" />
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

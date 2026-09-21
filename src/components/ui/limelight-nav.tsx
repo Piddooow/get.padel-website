@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import React, {
   cloneElement,
   useCallback,
@@ -164,12 +166,12 @@ export const LimelightNav = ({
       className={`relative inline-flex h-14 items-center overflow-hidden rounded-full border border-gp-olive/10 bg-card/95 px-3 text-gp-olive shadow-lg shadow-gp-olive/10 backdrop-blur-md md:h-16 md:px-4 ${className ?? ""}`}
     >
       {items.map(({ id, icon, label, href, onClick }, index) => (
-        <a
+        <Link
           key={id}
-          ref={(el) => {
+          ref={(el: HTMLAnchorElement | null) => {
             navItemRefs.current[index] = el;
           }}
-          href={href}
+          href={href ?? "#"}
           className={`relative z-20 flex h-full cursor-pointer items-center justify-center p-4 transition-opacity duration-150 ease-out active:opacity-70 md:p-5 ${iconContainerClassName ?? ""}`}
           onClick={() => handleItemClick(index, onClick)}
           aria-label={label}
@@ -180,7 +182,7 @@ export const LimelightNav = ({
               hasActive && activeIndex === index ? "opacity-100" : "opacity-40"
             } ${icon.props.className ?? ""} ${iconClassName ?? ""}`,
           })}
-        </a>
+        </Link>
       ))}
 
       <div

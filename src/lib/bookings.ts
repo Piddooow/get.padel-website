@@ -41,6 +41,8 @@ export interface CreateBookingInput {
   date: string;
   startHour: number;
   durationHours: number;
+  /** Contact details typed in the flow (falls back to the account). */
+  contact?: { name?: string; whatsapp?: string | null };
   /** Where Snap returns the visitor after paying (or failing). */
   finishUrl?: string;
 }
@@ -272,9 +274,9 @@ export async function createBooking(
       amountIdr,
       itemName: `${court.name} · ${input.date} ${hourLabel}`,
       customer: {
-        name: user?.name ?? "Get Padel Player",
+        name: input.contact?.name?.trim() || user?.name || "Get Padel Player",
         email: user?.email ?? "",
-        whatsapp: user?.whatsapp ?? null,
+        whatsapp: input.contact?.whatsapp?.trim() || user?.whatsapp || null,
       },
       finishUrl: input.finishUrl,
     });

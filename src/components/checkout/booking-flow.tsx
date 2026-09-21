@@ -45,6 +45,7 @@ export interface BookingFlowUser {
   id: string;
   name: string;
   email: string;
+  whatsapp?: string | null;
 }
 
 interface BookingFlowProps {
@@ -137,6 +138,14 @@ export function BookingFlow({
   );
   const [submitting, setSubmitting] = useState(false);
   const [errorKey, setErrorKey] = useState<BookingErrorKey | null>(null);
+  // "Isi data" step — prefilled from the account, editable, validated.
+  const [contactName, setContactName] = useState(user?.name ?? "");
+  const [contactWhatsapp, setContactWhatsapp] = useState(user?.whatsapp ?? "");
+  const contactNameValid = contactName.trim().length >= 2;
+  const contactWhatsappValid = /^(\+?62|0)8\d{7,12}$/.test(
+    contactWhatsapp.replace(/[\s-]/g, "")
+  );
+  const contactValid = contactNameValid && contactWhatsappValid;
 
   const days = useMemo(
     () => buildDayStrip(locale, initialDate, date),
@@ -209,6 +218,10 @@ export function BookingFlow({
           date,
           startHour: selected.hour,
           durationHours: duration,
+          contact: {
+            name: contactName.trim(),
+            whatsapp: contactWhatsapp.trim(),
+          },
         }),
       });
       const data = (await response.json()) as {
@@ -233,6 +246,45 @@ export function BookingFlow({
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (!user) {
+    return (
+      <div className="rounded-2xl bg-card p-5 ring-1 ring-gp-olive/10 sm:p-8">
+        <span className="inline-flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <LockKeyhole className="size-5" aria-hidden="true" />
+        </span>
+        <h2 className="font-heading mt-4 text-lg font-semibold">
+          {t("loginGateTitle")}
+        </h2>
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          {t("loginGateBody")}
+        </p>
+        <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-gp-olive/20 px-3 py-1.5 text-xs font-medium text-gp-olive">
+          <CalendarDays className="size-3.5" aria-hidden="true" />
+          {t("loginGateSteps")}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <ButtonLink
+            href={signInHref}
+            size="lg"
+            className="h-11 rounded-full px-6 font-semibold"
+          >
+            {t("ctaSignIn")}
+          </ButtonLink>
+          <ButtonLink
+            href={whatsappLink(t("waMessage"))}
+            external
+            variant="outline"
+            size="lg"
+            className="h-11 rounded-full border-gp-olive/25 px-6 font-semibold text-gp-olive hover:bg-gp-olive/5"
+          >
+            <WhatsAppIcon className="size-4" aria-hidden="true" />
+            {t("ctaWa")}
+          </ButtonLink>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -377,6 +429,60 @@ export function BookingFlow({
 
         <p className="mt-3 text-xs text-muted-foreground">{t("includes")}</p>
 
+        {/* Step 3 — details used for the confirmation & payment receipt */}
+        <div className="mt-5 rounded-xl border border-gp-olive/15 bg-gp-olive/[0.03] p-4">
+          <p className="font-heading text-sm font-semibold">{t("dataTitle")}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t("dataSubtitle")}
+          </p>
+
+          <label className="mt-3 block text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            {t("dataNameLabel")}
+            <input
+              value={contactName}
+              onChange={(event) => {
+                setContactName(event.target.value);
+                setErrorKey(null);
+              }}
+              autoComplete="name"
+              placeholder={t("dataNamePlaceholder")}
+              aria-invalid={!contactNameValid}
+              className="mt-1 w-full rounded-lg border border-gp-olive/20 bg-card px-3 py-2 text-sm font-normal normal-case outline-none transition-colors focus:border-gp-rust focus:ring-2 focus:ring-gp-rust/20"
+            />
+          </label>
+          {!contactNameValid && contactName.length > 0 ? (
+            <p className="mt-1 text-[11px] font-medium text-destructive">
+              {t("errorDataName")}
+            </p>
+          ) : null}
+
+          <label className="mt-3 block text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            {t("dataWhatsappLabel")}
+            <input
+              value={contactWhatsapp}
+              onChange={(event) => {
+                setContactWhatsapp(event.target.value);
+                setErrorKey(null);
+              }}
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder={t("dataWhatsappPlaceholder")}
+              aria-invalid={!contactWhatsappValid}
+              className="mt-1 w-full rounded-lg border border-gp-olive/20 bg-card px-3 py-2 text-sm font-normal normal-case outline-none transition-colors focus:border-gp-rust focus:ring-2 focus:ring-gp-rust/20"
+            />
+          </label>
+          {!contactWhatsappValid && contactWhatsapp.length > 0 ? (
+            <p className="mt-1 text-[11px] font-medium text-destructive">
+              {t("errorDataWhatsapp")}
+            </p>
+          ) : null}
+
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            {t("dataEmailNote", { email: user.email })}
+          </p>
+        </div>
+
         {errorKey ? (
           <p
             role="alert"
@@ -429,11 +535,11 @@ export function BookingFlow({
               <button
                 type="button"
                 onClick={handlePay}
-                disabled={!blockAvailable || submitting}
+                disabled={!blockAvailable || !contactValid || submitting}
                 aria-disabled={!blockAvailable || submitting}
                 className={cn(
                   "inline-flex h-11 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors",
-                  !blockAvailable || submitting
+                  !blockAvailable || !contactValid || submitting
                     ? "cursor-not-allowed bg-muted text-muted-foreground"
                     : "bg-gp-rust text-gp-light hover:bg-gp-rust/90"
                 )}

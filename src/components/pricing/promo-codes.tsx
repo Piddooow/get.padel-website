@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, Copy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CopyButton } from "@/components/ui/copy-button";
 import type { PromoView } from "@/lib/ui-content";
 import { cn } from "@/lib/utils";
 
@@ -14,20 +13,6 @@ import { cn } from "@/lib/utils";
  */
 export function PromoCodes({ promos }: { promos: PromoView[] }) {
   const t = useTranslations("pricing");
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-
-  async function copy(id: string, value: string) {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopiedId(id);
-      window.setTimeout(
-        () => setCopiedId((current) => (current === id ? null : current)),
-        2000
-      );
-    } catch {
-      setCopiedId(null);
-    }
-  }
 
   // Running promos first; ended promos stay visible as a monochrome archive.
   const sorted = [...promos].sort(
@@ -65,7 +50,6 @@ export function PromoCodes({ promos }: { promos: PromoView[] }) {
           <tbody>
             {sorted.map((promo) => {
               const copyValue = promo.link ?? promo.reference ?? "";
-              const copied = copiedId === promo.id;
               const expired = !promo.isRunning;
               return (
                 <tr
@@ -98,24 +82,11 @@ export function PromoCodes({ promos }: { promos: PromoView[] }) {
                   </td>
                   <td className="px-4 py-3 text-right">
                     {copyValue ? (
-                      <button
-                        type="button"
-                        onClick={() => copy(promo.id, copyValue)}
-                        aria-label={t("columnCopy")}
-                        className={cn(
-                          "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
-                          copied
-                            ? "border-gp-rust bg-gp-rust/10 text-gp-rust"
-                            : "border-gp-olive/25 text-gp-olive hover:bg-gp-olive/5"
-                        )}
-                      >
-                        {copied ? (
-                          <Check className="size-3.5" aria-hidden="true" />
-                        ) : (
-                          <Copy className="size-3.5" aria-hidden="true" />
-                        )}
-                        {copied ? t("copied") : t("columnCopy")}
-                      </button>
+                      <CopyButton
+                        value={copyValue}
+                        label={t("columnCopy")}
+                      />
+                    
                     ) : expired ? (
                       <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
                         {t("promoExpiredBadge")}

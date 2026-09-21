@@ -78,16 +78,18 @@ export function PageTransition() {
       // still plays the full curtain, then scrolls back to the top.
       const dropsHash = samePage && !targetHash && Boolean(currentHash);
 
-      playCurtainIn().eventCallback("onComplete", () => {
-        if (dropsHash) {
-          window.history.pushState(null, "", targetPath);
-          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-          revealTransition();
-          return;
-        }
-
+      // Navigate immediately: the route fetches while the curtain sweeps in,
+      // and the reveal starts as soon as BOTH the cover and the route are
+      // ready (never one after the other).
+      if (dropsHash) {
+        playCurtainIn();
+        window.history.pushState(null, "", targetPath);
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        revealTransition();
+      } else {
+        playCurtainIn();
         router.push(href);
-      });
+      }
     };
 
     document.addEventListener("click", onClick, true);

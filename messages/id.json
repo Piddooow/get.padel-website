@@ -14,7 +14,9 @@
     "location": "Lokasi",
     "program": "Program",
     "help": "Bantuan",
-    "blog": "Blog"
+    "blog": "Blog",
+    "myBooking": "Booking Saya",
+    "profile": "Profil"
   },
   "common": {
     "bookNow": "Booking Sekarang",
@@ -23,7 +25,9 @@
     "openDaily": "Buka setiap hari 06.00–22.00",
     "brand": "Get Padel Jakarta",
     "tagline": "Get Padel, Get Well",
-    "skipToContent": "Lewati ke konten"
+    "skipToContent": "Lewati ke konten",
+    "copy": "Salin",
+    "copied": "Berhasil disalin"
   },
   "hero": {
     "eyebrow": "Pondok Kelapa · Jakarta Timur",
@@ -110,7 +114,19 @@
     "payment_cancel": "Dibatalkan",
     "payment_expire": "Kedaluwarsa",
     "payment_failure": "Gagal",
-    "payment_refund": "Dana dikembalikan"
+    "payment_refund": "Dana dikembalikan",
+    "dataTitle": "Isi data pemesan",
+    "dataSubtitle": "Data ini dipakai untuk konfirmasi booking dan struk pembayaran.",
+    "dataNameLabel": "Nama pemesan",
+    "dataNamePlaceholder": "Nama lengkap",
+    "dataWhatsappLabel": "No. WhatsApp aktif",
+    "dataWhatsappPlaceholder": "08xx xxxx xxxx",
+    "dataEmailNote": "Email konfirmasi: {email}",
+    "errorDataName": "Nama minimal 2 karakter.",
+    "errorDataWhatsapp": "Nomor WhatsApp belum valid (contoh: 0811 8802 2770).",
+    "loginGateTitle": "Masuk dulu untuk memesan lapangan",
+    "loginGateBody": "Setelah masuk, kamu langsung kembali ke sini dan bisa lanjut memilih slot serta mengisi data — tanpa mengulang langkah.",
+    "loginGateSteps": "Pilih tanggal → pilih slot → isi data → bayar"
   },
   "availability": {
     "titleToday": "Slot Hari Ini",

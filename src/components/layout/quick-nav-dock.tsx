@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, CalendarDays, Tag, MapPin, GraduationCap } from "lucide-react";
+import { Home, CalendarDays, CalendarCheck, UserRound } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { LimelightNav, type NavItem } from "@/components/ui/limelight-nav";
 import { usePathname } from "@/i18n/navigation";
@@ -19,8 +19,10 @@ export function QuickNavDock() {
   // Every item uses identical markup and geometry — same padding, same icon
   // size, no per-icon transforms — so the Home button sits exactly like every
   // other dock item in every state.
+  // Order per the mobile spec: Schedule → My Booking → Home → Profile
+  // (Home sits in the middle of the row). Profile funnels through /masuk,
+  // which immediately forwards signed-in visitors to their account page.
   const items: NavItem[] = [
-    { id: "home", icon: <Home />, label: t("home"), href: `/${locale}` },
     {
       id: "schedule",
       icon: <CalendarDays />,
@@ -28,31 +30,30 @@ export function QuickNavDock() {
       href: `/${locale}/jadwal`,
     },
     {
-      id: "pricing",
-      icon: <Tag />,
-      label: t("pricing"),
-      href: `/${locale}/harga`,
+      id: "my-booking",
+      icon: <CalendarCheck />,
+      label: t("myBooking"),
+      href: `/${locale}/akun`,
     },
     {
-      id: "location",
-      icon: <MapPin />,
-      label: t("location"),
-      href: `/${locale}/lokasi`,
+      id: "home",
+      icon: <Home />,
+      label: t("home"),
+      href: `/${locale}`,
     },
     {
-      id: "program",
-      icon: <GraduationCap />,
-      label: t("program"),
-      href: `/${locale}/program`,
+      id: "profile",
+      icon: <UserRound />,
+      label: t("profile"),
+      href: `/${locale}/masuk`,
     },
   ];
 
   const routes: Record<string, string> = {
-    "home": "/",
     "schedule": "/jadwal",
-    "pricing": "/harga",
-    "location": "/lokasi",
-    "program": "/program",
+    "my-booking": "/akun",
+    "home": "/",
+    "profile": "/masuk",
   };
   const activeIndex = items.findIndex(
     (item) => routes[String(item.id)] === pathname

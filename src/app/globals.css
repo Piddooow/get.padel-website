@@ -154,6 +154,10 @@
     @apply bg-background text-foreground;
   }
   html {
+  /* iOS Safari inflates small text unless this is set — that inflation used to
+     push the second menu-button label ("Close") out of its clipped box. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
     @apply font-sans scroll-smooth;
   }
   ::selection {

@@ -400,15 +400,18 @@
 .menu-button-text {
   position: relative;
   display: block;
-  height: 1.2em;
+  /* Exact pixel box: the two labels can never peek past the clip. */
+  height: 1.25rem;
   overflow: hidden;
+  contain: paint;
 }
 
 .menu-button-text .p-large {
   margin: 0;
+  height: 1.25rem;
   font-size: 0.875rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25rem;
   white-space: nowrap;
 }
 

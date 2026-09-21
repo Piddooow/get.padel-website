@@ -14,7 +14,9 @@
     "location": "Location",
     "program": "Programs",
     "help": "Help",
-    "blog": "Blog"
+    "blog": "Blog",
+    "myBooking": "My Booking",
+    "profile": "Profile"
   },
   "common": {
     "bookNow": "Book Now",
@@ -23,7 +25,9 @@
     "openDaily": "Open daily 06:00–22:00",
     "brand": "Get Padel Jakarta",
     "tagline": "Get Padel, Get Well",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "copy": "Copy",
+    "copied": "Copied"
   },
   "hero": {
     "eyebrow": "Pondok Kelapa · East Jakarta",
@@ -110,7 +114,19 @@
     "payment_cancel": "Cancelled",
     "payment_expire": "Expired",
     "payment_failure": "Failed",
-    "payment_refund": "Refunded"
+    "payment_refund": "Refunded",
+    "dataTitle": "Your details",
+    "dataSubtitle": "We use these details for the booking confirmation and payment receipt.",
+    "dataNameLabel": "Name",
+    "dataNamePlaceholder": "Full name",
+    "dataWhatsappLabel": "Active WhatsApp number",
+    "dataWhatsappPlaceholder": "08xx xxxx xxxx",
+    "dataEmailNote": "Confirmation email: {email}",
+    "errorDataName": "Name must be at least 2 characters.",
+    "errorDataWhatsapp": "That WhatsApp number looks invalid (e.g. 0811 8802 2770).",
+    "loginGateTitle": "Sign in first to book a court",
+    "loginGateBody": "After signing in you come straight back here and continue with your slot and details — nothing to redo.",
+    "loginGateSteps": "Pick a date → pick a slot → fill in details → pay"
   },
   "availability": {
     "titleToday": "Today's Slots",
