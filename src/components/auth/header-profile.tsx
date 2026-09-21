@@ -8,7 +8,7 @@
  * Signed in: the same 36px circle shows the user's initials and links to
  * their bookings. The width never changes the navbar height.
  */
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { UserRound } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { UserAvatar } from "@/components/auth/user-avatar";
@@ -17,8 +17,8 @@ import { cn } from "@/lib/utils";
 
 export function HeaderProfile() {
   const t = useTranslations("nav");
-  const locale = useLocale();
-  const signInHref = `/${locale}/masuk`;
+  // The i18n `Link` adds the locale prefix itself — keep these paths bare.
+  const signInHref = "/masuk";
   const { user, loaded } = useSession();
 
   const pill =
