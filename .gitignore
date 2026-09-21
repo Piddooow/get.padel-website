@@ -16,3 +16,5 @@ data/
 
 # misc
 .DS_Store
+.vercel
+.env*
