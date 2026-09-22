@@ -4,32 +4,34 @@ import { Home, CalendarDays, CircleHelp, CupSoda } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { LimelightNav, type NavItem } from "@/components/ui/limelight-nav";
 import { usePathname } from "@/i18n/navigation";
-import { site } from "@/data/site";
 
 /**
- * Floating quick navigation (limelight dock): Home / Schedule / Pricing /
- * Location / Programs. Bottom-centre, responsive, hidden on the admin page.
+ * Floating quick navigation (limelight dock): Home / Schedule /
+ * @racerallycoffee / Help. The calendar button opens the Schedule page (the
+ * informational court and slot guide) instead of jumping straight to AYO.
+ * Bottom-centre and responsive.
  */
 export function QuickNavDock() {
   const t = useTranslations("nav");
-  const tCommon = useTranslations("common");
   const locale = useLocale();
   const pathname = usePathname();
 
-  // Every item uses identical markup and geometry — same padding, same icon
-  // size, no per-icon transforms — so the Home button sits exactly like every
-  // other dock item in every state.
-  // Order per the mobile spec: Schedule → My Booking → Home → Profile
-  // (Home sits in the middle of the row). Profile funnels through /masuk,
-  // which immediately forwards signed-in visitors to their account page.
-  // Bottom navigation per the blueprint: Home → Book Now → @racerallycoffee → Help.
+  // Every item uses identical markup and geometry (same padding, same icon
+  // size, no per-icon transforms) so the Home button sits exactly like every
+  // other dock item in every state. Order per the blueprint:
+  // Home → Schedule → @racerallycoffee → Help.
   const items: NavItem[] = [
-    { id: "home", icon: <Home />, label: t("home"), href: `/${locale}` },
     {
-      id: "book",
+      id: "home",
+      icon: <Home />,
+      label: t("home"),
+      href: `/${locale}`,
+    },
+    {
+      id: "schedule",
       icon: <CalendarDays />,
-      label: tCommon("bookNow"),
-      href: site.links.ayo,
+      label: t("schedule"),
+      href: `/${locale}/schedule`,
     },
     {
       id: "race-rally",
@@ -47,6 +49,7 @@ export function QuickNavDock() {
 
   const routes: Record<string, string> = {
     home: "/",
+    schedule: "/schedule",
     "race-rally": "/racerallycoffee",
     help: "/bantuan",
   };

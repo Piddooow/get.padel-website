@@ -29,6 +29,7 @@ AGENTS.md
 # planning docs stay local (README is tracked)
 /*.md
 !README.md
+/*.p
 
 # misc
 .DS_Store

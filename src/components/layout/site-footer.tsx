@@ -85,6 +85,14 @@ export async function SiteFooter() {
               </li>
               <li>
                 <Link
+                  href="/schedule"
+                  className="text-gp-light/80 transition-colors hover:text-gp-light"
+                >
+                  {t("nav.schedule")}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/harga"
                   className="text-gp-light/80 transition-colors hover:text-gp-light"
                 >

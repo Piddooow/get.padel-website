@@ -18,6 +18,7 @@ interface MenuLink {
   key:
     | "home"
     | "about"
+    | "schedule"
     | "pricingPromos"
     | "location"
     | "programs"
@@ -58,19 +59,21 @@ export function SterlingGateKineticNavigation({
   const links: MenuLink[] = [
     { key: "home", href: `/${locale}`, index: "01", shape: 1 },
     { key: "about", href: `/${locale}/about`, index: "02", shape: 2 },
-    { key: "pricingPromos", href: `/${locale}/harga`, index: "03", shape: 6 },
-    { key: "location", href: `/${locale}/lokasi`, index: "04", shape: 9 },
-    { key: "programs", href: `/${locale}/program`, index: "05", shape: 7 },
-    { key: "blog", href: `/${locale}/blog`, index: "06", shape: 5 },
-    { key: "contact", href: `/${locale}#kontak`, index: "07", shape: 4 },
-    { key: "help", href: `/${locale}/bantuan`, index: "08", shape: 3 },
-    { key: "raceRally", href: `/${locale}/racerallycoffee`, index: "09", shape: 8 },
-    { key: "booking", href: site.links.ayo, external: true, index: "10", shape: 6 },
+    { key: "schedule", href: `/${locale}/schedule`, index: "03", shape: 4 },
+    { key: "pricingPromos", href: `/${locale}/harga`, index: "04", shape: 6 },
+    { key: "location", href: `/${locale}/lokasi`, index: "05", shape: 9 },
+    { key: "programs", href: `/${locale}/program`, index: "06", shape: 7 },
+    { key: "blog", href: `/${locale}/blog`, index: "07", shape: 5 },
+    { key: "contact", href: `/${locale}#kontak`, index: "08", shape: 4 },
+    { key: "help", href: `/${locale}/bantuan`, index: "09", shape: 3 },
+    { key: "raceRally", href: `/${locale}/racerallycoffee`, index: "10", shape: 8 },
+    { key: "booking", href: site.links.ayo, external: true, index: "11", shape: 6 },
   ];
 
   const labels: Record<MenuLink["key"], string> = {
     home: t("nav.home"),
     about: t("nav.about"),
+    schedule: t("nav.schedule"),
     pricingPromos: t("nav.pricingPromos"),
     location: t("nav.location"),
     programs: t("nav.program"),

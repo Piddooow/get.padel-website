@@ -108,7 +108,7 @@ export default async function AboutPage({
           <div className="grid gap-8 rounded-3xl bg-card p-6 ring-1 ring-gp-olive/10 sm:p-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
             <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-2xl">
               <Image
-                src="/images/venue-court.jpg"
+                src="/images/venue-front.jpg"
                 alt={t("storyImageAlt")}
                 fill
                 sizes="(min-width: 1024px) 420px, (min-width: 640px) 60vw, 90vw"
