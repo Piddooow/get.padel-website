@@ -1,13 +1,12 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { CalendarCheck, MapPin, Star } from "lucide-react";
-import { BookingWidget } from "@/components/home/booking-widget";
 import { StatsBar } from "@/components/home/stats-bar";
 import { WhatsAppIcon } from "@/components/icons";
 import { ButtonLink } from "@/components/ui/button-link";
 import { heroImage, site, whatsappLink } from "@/data/site";
 
-export async function Hero({ today }: { today: string }) {
+export async function Hero() {
   const t = await getTranslations();
   const waHref = whatsappLink(t("common.waMessage"));
 
@@ -99,7 +98,6 @@ export async function Hero({ today }: { today: string }) {
           </div>
 
           {/* Booking widget (mock, client island) */}
-          <BookingWidget defaultDate={today} />
         </div>
 
         <StatsBar />

@@ -100,7 +100,7 @@ export default async function PricingPage({
               {tCommon("whatsapp")}
             </ButtonLink>
             <ButtonLink
-              href={`/${locale}/jadwal`}
+              href={site.links.ayo}
               variant="outline"
               size="lg"
               className="rounded-full border-gp-olive/25 px-6 font-semibold text-gp-olive hover:bg-gp-olive/5"

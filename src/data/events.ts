@@ -22,14 +22,14 @@ export const events: VenueEvent[] = [
     title: { id: "Chasing Sunset", en: "Chasing Sunset" },
     period: { id: "Agustus 2026", en: "August 2026" },
     description: {
-      id: "Friendly match komunitas bersama PadelHub — ajak komunitasmu untuk mengejar sunset bersama.",
-      en: "A community friendly match with PadelHub — bring your crew and chase another sunset together.",
+      id: "Friendly match komunitas bersama PadelHub. Ajak komunitasmu untuk mengejar sunset bersama.",
+      en: "A community friendly match with PadelHub. Bring your crew and chase another sunset together.",
     },
   },
   {
     id: "junior-summer-class",
     title: { id: "Junior Summer Class", en: "Junior Summer Class" },
-    period: { id: "29 Jun – 4 Jul 2026", en: "29 Jun – 4 Jul 2026" },
+    period: { id: "29 Jun sampai 4 Jul 2026", en: "29 Jun to 4 Jul 2026" },
     description: {
       id: "Program liburan untuk anak: kelas padel 6–9 & 10–13 tahun dengan certified coach.",
       en: "Holiday programme for kids: padel classes for ages 6–9 and 10–13 with a certified coach.",
@@ -37,7 +37,7 @@ export const events: VenueEvent[] = [
   },
   {
     id: "jamu-day",
-    title: { id: "Jamu Day — Hari Pancasila", en: "Jamu Day — Pancasila Day" },
+    title: { id: "Jamu Day: Hari Pancasila", en: "Jamu Day: Pancasila Day" },
     period: { id: "1 & 3 Juni 2026", en: "1 & 3 June 2026" },
     description: {
       id: "Setiap booking 1 jam pukul 07.00–12.00 mendapat 4 fresh jamu gratis.",

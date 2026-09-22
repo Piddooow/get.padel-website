@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight, Clock } from "lucide-react";
 import { ArticleCover } from "@/components/proof/article-cover";
 import { Link } from "@/i18n/navigation";
-import type { BlogPostSummaryDto } from "@/lib/blog-service";
+import type { BlogPostSummaryDto } from "@/lib/ui-content";
 
 /** Latest blog posts — cards link to the article pages. */
 export async function BlogCards({ posts }: { posts: BlogPostSummaryDto[] }) {

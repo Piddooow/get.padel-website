@@ -4,7 +4,6 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { EventsSection } from "@/components/programs/events-section";
 import { PolicySection } from "@/components/programs/policy-section";
-import { OpenMatchSection } from "@/components/programs/open-match-section";
 import {
   CoachingSection,
   JuniorTrialSection,
@@ -16,7 +15,6 @@ import { routing } from "@/i18n/routing";
 import { site } from "@/data/site";
 import {
   loadEvents,
-  loadOpenMatches,
   loadPrograms,
 } from "@/lib/ui-content";
 
@@ -63,10 +61,9 @@ export default async function ProgramPage({
   const tCommon = await getTranslations("common");
 
   // Database-backed content (with mock fallback) — lib/ui-content.ts.
-  const [programs, events, matches] = await Promise.all([
+  const [programs, events] = await Promise.all([
     loadPrograms(locale),
     loadEvents(locale),
-    loadOpenMatches(locale),
   ]);
 
   return (
@@ -105,9 +102,6 @@ export default async function ProgramPage({
           <JuniorTrialSection programs={programs} />
         </Reveal>
 
-        <Reveal>
-          <OpenMatchSection matches={matches} />
-        </Reveal>
 
         <Reveal>
           <EventsSection events={events} />

@@ -126,7 +126,7 @@ export function VenueCityFilter({ className }: { className?: string }) {
               aria-pressed={active}
               onClick={() => setCityKey(key)}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors",
+                "inline-flex h-11 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors",
                 active
                   ? "border-gp-olive bg-gp-olive text-gp-light"
                   : "border-gp-olive/20 bg-card text-gp-olive hover:border-gp-olive/40"

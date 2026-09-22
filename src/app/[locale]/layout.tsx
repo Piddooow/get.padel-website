@@ -3,9 +3,6 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { CtaClickTracker } from "@/components/analytics/cta-click-tracker";
-import { Ga4Analytics } from "@/components/analytics/ga4-analytics";
-import { CookieConsent } from "@/components/layout/cookie-consent";
 import { QuickNavDock } from "@/components/layout/quick-nav-dock";
 import { PageTransition } from "@/components/layout/page-transition";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -89,11 +86,8 @@ export default async function LocaleLayout({
             {children}
           </main>
           <SiteFooter />
-          <CookieConsent />
           <QuickNavDock />
           <PageTransition />
-          <Ga4Analytics />
-          <CtaClickTracker />
         </NextIntlClientProvider>
       </body>
     </html>

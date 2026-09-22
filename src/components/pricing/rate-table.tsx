@@ -28,14 +28,14 @@ export function RateTable({ rows }: { rows: Record<DayTab, RateRow[]> }) {
         >
           <th
             scope="row"
-            className="px-4 py-2.5 text-left text-sm font-medium tabular-nums"
+            className="px-2 py-2.5 sm:px-4 text-left text-sm font-medium tabular-nums"
           >
             {formatHourRange(locale, hour, hour + 1)}
           </th>
-          <td className="px-4 py-2.5 text-right text-sm font-semibold text-primary tabular-nums">
+          <td className="px-2 py-2.5 sm:px-4 text-right text-sm font-semibold text-primary tabular-nums">
             {formatIDR(price)}
           </td>
-          <td className="px-4 py-2.5 text-right text-xs text-muted-foreground tabular-nums">
+          <td className="px-2 py-2.5 sm:px-4 text-right text-xs text-muted-foreground tabular-nums">
             <s className="opacity-70">{formatIDR(strike)}</s>
             {discount > 0 && (
               <span className="ml-1.5 font-semibold text-gp-rust">
@@ -73,7 +73,7 @@ export function RateTable({ rows }: { rows: Record<DayTab, RateRow[]> }) {
             aria-pressed={tab === key}
             onClick={() => setTab(key)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors",
+              "inline-flex h-11 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors",
               tab === key
                 ? "border-gp-olive bg-gp-olive text-gp-light"
                 : "border-gp-olive/20 bg-card text-gp-olive hover:border-gp-olive/40"
@@ -84,21 +84,25 @@ export function RateTable({ rows }: { rows: Record<DayTab, RateRow[]> }) {
         ))}
       </div>
 
-      {/* Rate table */}
-      <div className="mt-5 overflow-hidden rounded-2xl bg-card ring-1 ring-gp-olive/10">
+      {/* Rate table — re-keyed per tab so the swap fades/slides as one grid
+          (discount column included) instead of snapping. */}
+      <div
+        key={tab}
+        className="animate-rate-swap mt-5 min-w-0 max-w-full overflow-x-auto rounded-2xl bg-card ring-1 ring-gp-olive/10"
+      >
         <table className="w-full text-sm">
           <caption className="sr-only">
-            {t("rateTitle")} — {t(tab === "weekday" ? "tabWeekday" : "tabWeekend")}
+            {t("rateTitle")} · {t(tab === "weekday" ? "tabWeekday" : "tabWeekend")}
           </caption>
           <thead>
             <tr className="border-b border-gp-olive/10 text-xs tracking-wide text-muted-foreground uppercase">
-              <th scope="col" className="px-4 py-3 text-left font-semibold">
+              <th scope="col" className="px-2 py-3 sm:px-4 text-left font-semibold">
                 {t("columnSlot")}
               </th>
-              <th scope="col" className="px-4 py-3 text-right font-semibold">
+              <th scope="col" className="px-2 py-3 sm:px-4 text-right font-semibold">
                 {t("columnPrice")}
               </th>
-              <th scope="col" className="px-4 py-3 text-right font-semibold">
+              <th scope="col" className="px-2 py-3 sm:px-4 text-right font-semibold">
                 {t("columnNormal")}
               </th>
             </tr>

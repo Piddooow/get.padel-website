@@ -17,18 +17,20 @@ if (typeof window !== "undefined") {
 interface MenuLink {
   key:
     | "home"
-    | "schedule"
-    | "pricing"
+    | "about"
+    | "pricingPromos"
     | "location"
-    | "program"
-    | "help"
-    | "booking"
+    | "programs"
+    | "blog"
     | "contact"
+    | "help"
+    | "raceRally"
+    | "booking"
     | "whatsapp";
   href: string;
-  external?: boolean;
   index: string;
   shape: number;
+  external?: boolean;
 }
 
 type MenuItemWithCleanup = HTMLElement & { _cleanup?: () => void };
@@ -52,33 +54,41 @@ export function SterlingGateKineticNavigation({
   const locale = useLocale();
   const waHref = whatsappLink(t("common.waMessage"));
 
+  /** Burger-menu order is intentional: pages first, contact/help, café, CTA. */
   const links: MenuLink[] = [
     { key: "home", href: `/${locale}`, index: "01", shape: 1 },
-    { key: "schedule", href: `/${locale}/jadwal`, index: "02", shape: 2 },
-    { key: "pricing", href: `/${locale}/harga`, index: "03", shape: 6 },
-    { key: "location", href: `/${locale}/lokasi`, index: "04", shape: 7 },
-    { key: "program", href: `/${locale}/program`, index: "05", shape: 8 },
-    { key: "help", href: `/${locale}/bantuan`, index: "06", shape: 9 },
-    { key: "booking", href: `/${locale}/pesan`, index: "07", shape: 3 },
-    { key: "contact", href: `/${locale}#kontak`, index: "08", shape: 4 },
-    { key: "whatsapp", href: waHref, external: true, index: "09", shape: 5 },
+    { key: "about", href: `/${locale}/about`, index: "02", shape: 2 },
+    { key: "pricingPromos", href: `/${locale}/harga`, index: "03", shape: 6 },
+    { key: "location", href: `/${locale}/lokasi`, index: "04", shape: 9 },
+    { key: "programs", href: `/${locale}/program`, index: "05", shape: 7 },
+    { key: "blog", href: `/${locale}/blog`, index: "06", shape: 5 },
+    { key: "contact", href: `/${locale}#kontak`, index: "07", shape: 4 },
+    { key: "help", href: `/${locale}/bantuan`, index: "08", shape: 3 },
+    { key: "raceRally", href: `/${locale}/racerallycoffee`, index: "09", shape: 8 },
+    { key: "booking", href: site.links.ayo, external: true, index: "10", shape: 6 },
   ];
 
   const labels: Record<MenuLink["key"], string> = {
     home: t("nav.home"),
-    schedule: t("nav.schedule"),
-    pricing: t("menu.pricing"),
+    about: t("nav.about"),
+    pricingPromos: t("nav.pricingPromos"),
     location: t("nav.location"),
-    program: t("nav.program"),
-    help: t("nav.help"),
-    booking: t("common.bookNow"),
+    programs: t("nav.program"),
+    blog: t("nav.blog"),
     contact: t("nav.contact"),
+    help: t("nav.help"),
+    raceRally: t("nav.raceRally"),
+    booking: `${t("common.bookNow")} · AYO`,
     whatsapp: t("common.whatsapp"),
   };
 
-  const handleLinkClick = useCallback(() => {
-    onClose();
-  }, [onClose]);
+  // External links (Book Now → AYO) open a new tab: the menu stays open.
+  const handleLinkClick = useCallback(
+    (external?: boolean) => {
+      if (!external) onClose();
+    },
+    [onClose]
+  );
 
   /* ---------- initial setup + hover shapes ---------- */
   useEffect(() => {
@@ -432,7 +442,7 @@ export function SterlingGateKineticNavigation({
                   >
                     <Link
                       href={link.href}
-                      onClick={handleLinkClick}
+                      onClick={() => handleLinkClick(link.external)}
                       className="nav-link"
                       {...(link.external
                         ? { target: "_blank", rel: "noopener noreferrer" }

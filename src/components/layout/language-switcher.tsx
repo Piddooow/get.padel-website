@@ -12,10 +12,11 @@ const LANGUAGE_NAMES: Record<(typeof routing.locales)[number], string> = {
 };
 
 /**
- * ID | EN switcher — keeps the current page (next-intl renders the same route
- * under the other locale prefix). The switch plays the same curtain transition
- * as every other navigation: the curtain lives outside React, so it survives
- * the locale-layout remount.
+ * ID | EN switch — one segmented pill (not two separate buttons), sized like
+ * the other header controls. Keeps the current page; next-intl renders the
+ * same route under the other locale prefix. The switch plays the same curtain
+ * transition as every other navigation: the curtain lives outside React, so it
+ * survives the locale-layout remount.
  */
 export function LanguageSwitcher({ className }: { className?: string }) {
   const locale = useLocale();
@@ -36,7 +37,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       role="group"
       aria-label="Language / Bahasa"
       className={cn(
-        "inline-flex h-9 items-center rounded-full border border-current/25 p-0.5",
+        "inline-flex h-11 shrink-0 items-center rounded-full border border-current/25",
         className
       )}
     >
@@ -53,10 +54,10 @@ export function LanguageSwitcher({ className }: { className?: string }) {
             aria-label={LANGUAGE_NAMES[item]}
             aria-current={active ? "true" : undefined}
             className={cn(
-              "inline-flex h-full items-center rounded-full px-2 text-xs font-semibold uppercase tracking-wide transition-colors focus-visible:ring-2 focus-visible:ring-current/60 focus-visible:outline-none min-[360px]:px-2.5",
+              "inline-flex h-full min-w-11 items-center justify-center rounded-full px-3.5 text-xs font-semibold uppercase tracking-wide transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-current/60 focus-visible:outline-none",
               active
-                ? "bg-gp-light text-gp-olive dark:bg-gp-light/15 dark:text-gp-light"
-                : "text-current/75 hover:text-current"
+                ? "bg-gp-light text-gp-olive shadow-sm"
+                : "text-current/70 hover:bg-white/10 hover:text-current"
             )}
           >
             {item.toUpperCase()}

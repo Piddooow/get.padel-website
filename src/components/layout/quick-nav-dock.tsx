@@ -1,9 +1,10 @@
 "use client";
 
-import { Home, CalendarDays, CalendarCheck, UserRound } from "lucide-react";
+import { Home, CalendarDays, CircleHelp, CupSoda } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { LimelightNav, type NavItem } from "@/components/ui/limelight-nav";
 import { usePathname } from "@/i18n/navigation";
+import { site } from "@/data/site";
 
 /**
  * Floating quick navigation (limelight dock): Home / Schedule / Pricing /
@@ -11,10 +12,9 @@ import { usePathname } from "@/i18n/navigation";
  */
 export function QuickNavDock() {
   const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const locale = useLocale();
   const pathname = usePathname();
-
-  if (pathname.startsWith("/admin")) return null;
 
   // Every item uses identical markup and geometry — same padding, same icon
   // size, no per-icon transforms — so the Home button sits exactly like every
@@ -22,40 +22,33 @@ export function QuickNavDock() {
   // Order per the mobile spec: Schedule → My Booking → Home → Profile
   // (Home sits in the middle of the row). Profile funnels through /masuk,
   // which immediately forwards signed-in visitors to their account page.
-  // Order per the latest mobile spec: Home → Schedule → My Booking → Profile.
-  // Profile funnels through /masuk, which forwards signed-in visitors to /akun.
+  // Bottom navigation per the blueprint: Home → Book Now → @racerallycoffee → Help.
   const items: NavItem[] = [
+    { id: "home", icon: <Home />, label: t("home"), href: `/${locale}` },
     {
-      id: "home",
-      icon: <Home />,
-      label: t("home"),
-      href: `/${locale}`,
-    },
-    {
-      id: "schedule",
+      id: "book",
       icon: <CalendarDays />,
-      label: t("schedule"),
-      href: `/${locale}/jadwal`,
+      label: tCommon("bookNow"),
+      href: site.links.ayo,
     },
     {
-      id: "my-booking",
-      icon: <CalendarCheck />,
-      label: t("myBooking"),
-      href: `/${locale}/akun`,
+      id: "race-rally",
+      icon: <CupSoda />,
+      label: t("raceRally"),
+      href: `/${locale}/racerallycoffee`,
     },
     {
-      id: "profile",
-      icon: <UserRound />,
-      label: t("profile"),
-      href: `/${locale}/masuk`,
+      id: "help",
+      icon: <CircleHelp />,
+      label: t("help"),
+      href: `/${locale}/bantuan`,
     },
   ];
 
   const routes: Record<string, string> = {
-    "schedule": "/jadwal",
-    "my-booking": "/akun",
-    "home": "/",
-    "profile": "/masuk",
+    home: "/",
+    "race-rally": "/racerallycoffee",
+    help: "/bantuan",
   };
   const activeIndex = items.findIndex(
     (item) => routes[String(item.id)] === pathname

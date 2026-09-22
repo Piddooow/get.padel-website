@@ -75,7 +75,7 @@ export const faqItems: FaqItem[] = [
     },
     answer: {
       id: "Sewa raket tersedia lengkap, termasuk raket anak. Raket yang dikembalikan rusak dikenakan denda minimum Rp300.000.",
-      en: "Racket rental is available — kids' rackets included. A racket returned damaged incurs a minimum Rp300,000 fee.",
+      en: "Racket rental is available, including kids' rackets. A racket returned damaged incurs a minimum Rp300,000 fee.",
     },
   },
   {
@@ -85,8 +85,8 @@ export const faqItems: FaqItem[] = [
       en: "What are the shoe and court rules?",
     },
     answer: {
-      id: "Wajib memakai sepatu olahraga bersih (non-marking & no-studs). Makanan dan minuman dilarang dibawa ke area lapangan. Seluruh area bebas asap rokok — vape & e-cigarette diperkenankan.",
-      en: "Clean sports shoes are required (non-marking & no-studs). Food and drinks are not allowed on the court. The whole venue is smoke-free — vaping and e-cigarettes are permitted.",
+      id: "Wajib memakai sepatu olahraga bersih (non-marking & no-studs). Makanan dan minuman dilarang dibawa ke area lapangan. Seluruh area bebas asap rokok, dan vape atau e-cigarette diperkenankan.",
+      en: "Clean sports shoes are required (non-marking & no-studs). Food and drinks are not allowed on the court. The whole venue is smoke-free, and vaping or e-cigarettes are permitted.",
     },
   },
   {
@@ -129,8 +129,8 @@ export const faqItems: FaqItem[] = [
       en: "How do I buy a membership package?",
     },
     answer: {
-      id: "Paket membership Get Padel hanya dapat dibeli melalui aplikasi AYO Indonesia — harga dan voucher aktif terlihat langsung di aplikasi.",
-      en: "Get Padel membership packages can only be purchased through the AYO Indonesia app — pricing and active vouchers are shown in the app.",
+      id: "Paket membership Get Padel hanya dapat dibeli melalui aplikasi AYO Indonesia. Harga dan voucher aktif terlihat langsung di aplikasi.",
+      en: "Get Padel membership packages can only be purchased through the AYO Indonesia app. Pricing and active vouchers are shown in the app.",
     },
   },
   {
@@ -140,8 +140,8 @@ export const faqItems: FaqItem[] = [
       en: "Can I use the venue for events or commercial shoots?",
     },
     answer: {
-      id: "Harga normal hanya untuk penggunaan non-event. Untuk turnamen, brand/booth, shooting, pre-wedding, atau iklan, hubungi getpadeljakarta@gmail.com atau WA 0811 8802 2770 — tarif khusus di luar harga normal.",
-      en: "Standard rates are for non-event use only. For tournaments, brand booths, shoots, pre-weddings or ads, contact getpadeljakarta@gmail.com or WhatsApp +62 811 8802 2770 — commercial rates apply.",
+      id: "Harga normal hanya untuk penggunaan non-event. Untuk turnamen, brand/booth, shooting, pre-wedding, atau iklan, hubungi getpadeljakarta@gmail.com atau WA 0811 8802 2770. Tarif khusus di luar harga normal.",
+      en: "Standard rates are for non-event use only. For tournaments, brand booths, shoots, pre-weddings or ads, contact getpadeljakarta@gmail.com or WhatsApp +62 811 8802 2770. Commercial rates apply.",
     },
   },
 ];

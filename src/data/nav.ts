@@ -1,11 +1,11 @@
 /**
  * Header navigation model. `route` items are real pages (`/{locale}{route}`);
  * `hash` items point to sections on the homepage (`/{locale}#{hash}`).
- * Add new entries here as pages are built.
+ * Booking is NOT part of the website: all booking CTAs lead to AYO.
  */
 export interface NavItem {
   /** Translation key under the `nav.*` namespace. */
-  key: "home" | "schedule" | "pricing" | "location" | "program" | "contact";
+  key: "home" | "about" | "services" | "events" | "raceRally" | "contact";
   /** Full in-app route (without the locale prefix). */
   route?: string;
   /** In-page section id on the homepage. */
@@ -13,14 +13,13 @@ export interface NavItem {
 }
 
 /**
- * Desktop nav entries. The Help page (`/bantuan`) intentionally lives in the
- * fullscreen menu + footer only — the desktop bar is at capacity from `lg`.
+ * Desktop nav entries (Help stays in the fullscreen menu + footer; Contact is
+ * reachable from the footer, which owns the #kontak anchor).
  */
 export const navItems: NavItem[] = [
   { key: "home" },
-  { key: "schedule", route: "/jadwal" },
-  { key: "pricing", route: "/harga" },
-  { key: "location", route: "/lokasi" },
-  { key: "program", route: "/program" },
-  { key: "contact", hash: "kontak" },
+  { key: "about", route: "/about" },
+  { key: "services", route: "/harga" },
+  { key: "events", route: "/program" },
+  { key: "raceRally", route: "/racerallycoffee" },
 ];

@@ -34,7 +34,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} — Get Padel Jakarta`,
+    title: `${post.title} | Get Padel Jakarta`,
     description: post.excerpt,
     alternates: {
       canonical: `/${resolved}/blog/${post.slug}`,

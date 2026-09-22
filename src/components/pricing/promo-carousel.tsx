@@ -55,13 +55,13 @@ export function PromoCarousel() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-w-0 max-w-full">
       <div
         ref={scrollerRef}
         role="region"
         aria-label={t("carouselLabel")}
         tabIndex={0}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 focus-visible:outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex w-full min-w-0 max-w-full snap-x snap-mandatory gap-4 overflow-x-auto pb-3 focus-visible:outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {promoPosters.map((promo) => (
           <figure

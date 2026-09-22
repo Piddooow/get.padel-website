@@ -183,8 +183,8 @@ export const facilities: Facility[] = [
     },
     official: false,
     title: {
-      id: "Sewa raket — termasuk raket anak",
-      en: "Racket rental — kids' rackets too",
+      id: "Sewa raket, termasuk raket anak",
+      en: "Racket rental, kids' rackets too",
     },
   },
   {

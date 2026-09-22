@@ -102,7 +102,7 @@ function DayTypeToggle({
             aria-pressed={active}
             onClick={() => onChange(option.key)}
             className={cn(
-              "relative isolate rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-gp-olive/40 focus-visible:outline-none",
+              "relative isolate inline-flex h-11 items-center rounded-full px-5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-gp-olive/40 focus-visible:outline-none",
               active ? "text-gp-light" : "text-gp-olive hover:bg-gp-olive/5"
             )}
           >

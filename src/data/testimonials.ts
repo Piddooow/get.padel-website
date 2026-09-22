@@ -26,8 +26,8 @@ export const testimonials: Testimonial[] = [
     rating: 5,
     period: { id: "5 bulan lalu", en: "5 months ago" },
     quote: {
-      id: "Tempatnya super cozy dan nyaman banget buat main ama keluarga. Bersih, banyak colokan, fasilitas lengkap — kipas angin di berbagai sudut dan kamar mandinya bersih serta dingin banget. Sering ada promo menarik. Highly recommended!",
-      en: "Super cosy and comfortable for playing with the family. Clean, plenty of power outlets, complete facilities — fans everywhere and the bathrooms are spotless and really cool. There are often great promos. Highly recommended!",
+      id: "Tempatnya super cozy dan nyaman banget buat main ama keluarga. Bersih, banyak colokan, fasilitas lengkap, kipas angin di berbagai sudut dan kamar mandinya bersih serta dingin banget. Sering ada promo menarik. Highly recommended!",
+      en: "Super cosy and comfortable for playing with the family. Clean, plenty of power outlets, complete facilities, with fans everywhere and the bathrooms are spotless and really cool. There are often great promos. Highly recommended!",
     },
   },
   {
@@ -38,7 +38,7 @@ export const testimonials: Testimonial[] = [
     period: { id: "5 bulan lalu", en: "5 months ago" },
     quote: {
       id: "10/10. Court-nya bagus, tidak licin sama sekali. Setelah main dikasih handuk dingin, segar banget. Kamar mandi bersih, tidak bau, adem. Pelayanannya ramah dan gercep. Worth to come back!",
-      en: "10/10. The court is great and not slippery at all. After playing you get a cold towel — so refreshing. The bathrooms are clean, odour-free and cool. Friendly, fast service. Worth coming back!",
+      en: "10/10. The court is great and not slippery at all. After playing you get a cold towel, so refreshing. The bathrooms are clean, odour-free and cool. Friendly, fast service. Worth coming back!",
     },
   },
   {
@@ -71,7 +71,7 @@ export const testimonials: Testimonial[] = [
     period: { id: "9 bulan lalu", en: "9 months ago" },
     quote: {
       id: "Lapangan padel 2 court di perumahan Billy & Moon. Lapangan oke, sirkulasi udara bagus, tidak panas dan tidak pengap. Kamar mandi oke, ruang tunggu cukup. Overall memuaskan.",
-      en: "Two padel courts inside the Billy & Moon estate. Great courts, good air circulation — not hot, not stuffy. Nice bathrooms and a spacious lounge. Satisfying overall.",
+      en: "Two padel courts inside the Billy & Moon estate. Great courts, good air circulation, not hot and not stuffy. Nice bathrooms and a spacious lounge. Satisfying overall.",
     },
   },
   {
@@ -82,7 +82,7 @@ export const testimonials: Testimonial[] = [
     period: { id: "6 bulan lalu", en: "6 months ago" },
     quote: {
       id: "Tempatnya nyaman dan bersih, sirkulasi udaranya mantap, toiletnya bersih. Yang paling penting: yang tidak punya raket bisa sewa di sini karena harganya murah dan lengkap.",
-      en: "Comfortable and clean, great air circulation, clean toilets. Most importantly: if you don't own a racket you can rent here — affordable and complete.",
+      en: "Comfortable and clean, great air circulation, clean toilets. Most importantly: if you don't own a racket you can rent here, affordable and complete.",
     },
   },
   {
@@ -93,7 +93,7 @@ export const testimonials: Testimonial[] = [
     period: { id: "26 Jul 2026", en: "26 Jul 2026" },
     quote: {
       id: "Bersih, nyaman, dapat handuk dingin, kamar mandi ber-AC, dan yang penting air kelapanya enak.",
-      en: "Clean, comfortable, you get a cold towel, air-conditioned bathrooms — and most importantly, the coconut water is delicious.",
+      en: "Clean, comfortable, you get a cold towel, air-conditioned bathrooms, and most importantly, the coconut water is delicious.",
     },
   },
   {

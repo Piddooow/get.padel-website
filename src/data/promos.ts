@@ -51,8 +51,8 @@ export const promos: Promo[] = [
   {
     id: "snack-mayora",
     title: {
-      id: "1 Hour 1 Box — Snack Mayora",
-      en: "1 Hour 1 Box — Mayora Snack",
+      id: "1 Hour 1 Box: Snack Mayora",
+      en: "1 Hour 1 Box: Mayora Snack",
     },
     period: { id: "Mulai 9 Sep 2026 · selama stok", en: "From 9 Sep 2026 · while stock lasts" },
     detail: {
@@ -80,10 +80,10 @@ export const promos: Promo[] = [
   {
     id: "mandiri",
     title: {
-      id: "Diskon s.d. 20% — Tukar Livin' Poin Mandiri",
-      en: "Up to 20% Off — Redeem Mandiri Livin' Poin",
+      id: "Diskon s.d. 20%: Tukar Livin' Poin Mandiri",
+      en: "Up to 20% Off: Redeem Mandiri Livin' Poin",
     },
-    period: { id: "9 Jan 2026 – 8 Jan 2027", en: "9 Jan 2026 – 8 Jan 2027" },
+    period: { id: "9 Jan 2026 sampai 8 Jan 2027", en: "9 Jan 2026 to 8 Jan 2027" },
     detail: {
       id: "Tukar Livin' Poin dengan Mandiri Kartu Kredit/Debit, bertransaksi langsung di venue. Min. transaksi Rp300.000 · maks. redeem Rp100.000 · berlaku setiap hari · tidak berlaku kelipatan · bisa Power Installment. Info: bmri.id/getpadel atau Mandiri Call 14000.",
       en: "Redeem Livin' Poin with your Mandiri credit/debit card, transacting directly at the venue. Min. spend Rp300,000 · max. redemption Rp100,000 · valid daily · not cumulative · supports Power Installment. Info: bmri.id/getpadel or Mandiri Call 14000.",
@@ -97,8 +97,8 @@ export const promos: Promo[] = [
   {
     id: "junior-class",
     title: {
-      id: "Junior Class — 6–9 & 10–13 Tahun",
-      en: "Junior Class — Ages 6–9 & 10–13",
+      id: "Junior Class untuk Usia 6–9 dan 10–13 Tahun",
+      en: "Junior Class for Ages 6–9 and 10–13",
     },
     period: {
       id: "Rp450.000/pax untuk 3 sesi",
@@ -128,10 +128,10 @@ export const promos: Promo[] = [
   {
     id: "bri-installment",
     title: {
-      id: "Cicilan 0% — BRI Kartu Kredit",
-      en: "0% Installments — BRI Credit Card",
+      id: "Cicilan 0%: BRI Kartu Kredit",
+      en: "0% Installments: BRI Credit Card",
     },
-    period: { id: "1 Feb – 31 Des 2026", en: "1 Feb – 31 Dec 2026" },
+    period: { id: "1 Feb sampai 31 Des 2026", en: "1 Feb to 31 Dec 2026" },
     detail: {
       id: "Cicilan 0% hingga 12 bulan dengan BRI Kartu Kredit. Min. transaksi Rp5 juta. Kontak: Sabrina 0812 1214 017.",
       en: "0% installments up to 12 months with a BRI credit card. Min. spend Rp5 million. Contact: Sabrina 0812 1214 017.",
@@ -144,13 +144,13 @@ export const promos: Promo[] = [
   {
     id: "free-trial",
     title: {
-      id: "Free Trial — Slot Terbatas",
-      en: "Free Trial — Limited Spots",
+      id: "Free Trial: Slot Terbatas",
+      en: "Free Trial: Limited Spots",
     },
     period: { id: "Berjalan", en: "Ongoing" },
     detail: {
-      id: "Coba padel gratis! Padel fever has arrived — dan free trial-mu menunggu. Daftar lewat formulir resmi.",
-      en: "Try padel for free! Padel fever has arrived — and your free trial is waiting. Register via the official form.",
+      id: "Coba padel gratis! Padel fever has arrived dan free trial-mu menunggu. Daftar lewat formulir resmi.",
+      en: "Try padel for free! Padel fever has arrived and your free trial is waiting. Register via the official form.",
     },
     source: "Highlight Free Trial",
     link: "https://forms.gle/2zNxHCYW3NyUNsiF9",
@@ -164,7 +164,7 @@ export const archivedPromos: Promo[] = [
       id: "Ramadhan Promo",
       en: "Ramadhan Promo",
     },
-    period: { id: "20 Feb – 20 Mar 2026", en: "20 Feb – 20 Mar 2026" },
+    period: { id: "20 Feb sampai 20 Mar 2026", en: "20 Feb to 20 Mar 2026" },
     detail: {
       id: "Weekday 06.00–15.00 Rp245.000 · 15.00–22.00 Rp330.000 · Weekend 06.00–15.00 Rp275.000 · 15.00–22.00 Rp330.000. Tidak dapat digabung dengan promo lain.",
       en: "Weekday 06.00–15.00 Rp245,000 · 15.00–22.00 Rp330,000 · Weekend 06.00–15.00 Rp275,000 · 15.00–22.00 Rp330,000. Not combinable with other promos.",
@@ -193,8 +193,8 @@ export const archivedPromos: Promo[] = [
   {
     id: "opening-2025",
     title: {
-      id: "Opening Promo — All Court, All Hours",
-      en: "Opening Promo — All Court, All Hours",
+      id: "Opening Promo: All Court, All Hours",
+      en: "Opening Promo: All Court, All Hours",
     },
     period: { id: "20–31 Des 2025", en: "20–31 Dec 2025" },
     detail: {

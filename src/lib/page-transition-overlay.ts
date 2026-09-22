@@ -17,12 +17,12 @@ export const OVERLAY_ID = "gp-page-transition";
 /** Centered brand mark shown while the curtain covers the screen. */
 const LOGO_SRC = "/logo-getpadel.webp";
 
-export const PANEL_DURATION = 0.4;
-export const PANEL_STAGGER = 0.03;
-export const REVEAL_DELAY = 0.08;
-/** Slightly quicker sweep out, so the whole transition lands at ~1.1s. */
-export const REVEAL_PANEL_DURATION = 0.35;
-export const CONTENT_DURATION = 0.4;
+export const PANEL_DURATION = 0.55;
+export const PANEL_STAGGER = 0.045;
+export const REVEAL_DELAY = 0.12;
+/** Slightly quicker sweep out, so the whole transition lands at ~1.4s. */
+export const REVEAL_PANEL_DURATION = 0.45;
+export const CONTENT_DURATION = 0.55;
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(CustomEase);
@@ -46,6 +46,8 @@ export type TransitionReason = "navigation" | "refresh";
 let state: TransitionState = "idle";
 let transitionReason: TransitionReason = "navigation";
 let safetyTimer: number | null = null;
+/** Callbacks flushed once the curtain fully covers the viewport. */
+let coverListeners: Array<() => void> = [];
 /** True once the curtain has fully covered the viewport. */
 let coverDone = true;
 /** Set when a reveal was requested before the cover finished. */
@@ -142,6 +144,19 @@ export function contentTargets(): HTMLElement[] {
   });
 }
 
+/**
+ * Runs `callback` once the curtain has fully covered the viewport (immediately
+ * if it already has). This is what lets navigation start only AFTER the
+ * entrance animation, so the route swap always happens behind the curtain.
+ */
+export function afterCover(callback: () => void): void {
+  if (coverDone) {
+    callback();
+    return;
+  }
+  coverListeners.push(callback);
+}
+
 /** Sweeps the curtain in — covers the viewport. */
 export function playCurtainIn(): gsap.core.Tween {
   const overlay = ensureOverlay();
@@ -152,6 +167,7 @@ export function playCurtainIn(): gsap.core.Tween {
 
   coverDone = false;
   revealPending = false;
+  coverListeners = [];
 
   const timeline = gsap.fromTo(
     panels,
@@ -163,6 +179,9 @@ export function playCurtainIn(): gsap.core.Tween {
       ease: "main",
       onComplete: () => {
         coverDone = true;
+        const listeners = coverListeners;
+        coverListeners = [];
+        for (const listener of listeners) listener();
         if (revealPending) {
           revealPending = false;
           revealTransition();

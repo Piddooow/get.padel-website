@@ -53,7 +53,7 @@ export async function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="inline-flex size-9 items-center justify-center rounded-full border border-gp-light/20 text-gp-light/80 transition-colors hover:bg-white/10 hover:text-gp-light"
+                  className="inline-flex size-11 items-center justify-center rounded-full border border-gp-light/20 text-gp-light/80 transition-colors hover:bg-white/10 hover:text-gp-light"
                 >
                   {social.icon}
                 </a>
@@ -68,12 +68,20 @@ export async function SiteFooter() {
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <a
-                  href="#jadwal"
+                <Link
+                  href="/"
                   className="text-gp-light/80 transition-colors hover:text-gp-light"
                 >
-                  {t("nav.schedule")}
-                </a>
+                  {t("nav.home")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-gp-light/80 transition-colors hover:text-gp-light"
+                >
+                  {t("nav.about")}
+                </Link>
               </li>
               <li>
                 <Link
@@ -101,6 +109,14 @@ export async function SiteFooter() {
               </li>
               <li>
                 <Link
+                  href="/racerallycoffee"
+                  className="text-gp-light/80 transition-colors hover:text-gp-light"
+                >
+                  {"@racerallycoffee"}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/blog"
                   className="text-gp-light/80 transition-colors hover:text-gp-light"
                 >
@@ -113,22 +129,6 @@ export async function SiteFooter() {
                   className="text-gp-light/80 transition-colors hover:text-gp-light"
                 >
                   {t("nav.help")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pesan"
-                  className="text-gp-light/80 transition-colors hover:text-gp-light"
-                >
-                  {t("checkout.eyebrow")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/masuk"
-                  className="text-gp-light/80 transition-colors hover:text-gp-light"
-                >
-                  {t("auth.loginTab")} · {t("account.eyebrow")}
                 </Link>
               </li>
               <li>
@@ -146,17 +146,7 @@ export async function SiteFooter() {
                   rel="noopener noreferrer"
                   className="text-gp-light/80 transition-colors hover:text-gp-light"
                 >
-                  {t("common.bookNow")} · AYO
-                </a>
-              </li>
-              <li>
-                <a
-                  href={site.links.linktree}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gp-light/80 transition-colors hover:text-gp-light"
-                >
-                  Linktree
+                  {`${t("common.bookNow")} · AYO`}
                 </a>
               </li>
             </ul>

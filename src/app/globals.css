@@ -210,3 +210,26 @@ body {
     animation: none;
   }
 }
+
+/* Rate-card swap: the whole grid (discount column included) eases in when the
+   weekday/weekend tab changes, instead of snapping. */
+@keyframes gp-rate-swap {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rate-swap {
+  animation: gp-rate-swap 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rate-swap {
+    animation: none;
+  }
+}

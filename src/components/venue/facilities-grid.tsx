@@ -135,7 +135,7 @@ export async function FacilitiesGrid({
             href={site.links.cafeInstagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center justify-center rounded-full border border-gp-light/30 px-4 py-2 text-sm font-semibold text-gp-light transition-colors hover:bg-white/10"
+            className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-gp-light/30 px-4 text-sm font-semibold text-gp-light transition-colors hover:bg-white/10"
           >
             @racerallycoffee
           </a>

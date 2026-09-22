@@ -3,7 +3,6 @@ import { Link } from "@/i18n/navigation";
 import { getLocale } from "next-intl/server";
 import { BlogCards } from "@/components/proof/blog-cards";
 import { GalleryLightbox } from "@/components/proof/gallery-lightbox";
-import { NewsletterForm } from "@/components/proof/newsletter-form";
 import { RatingSummary } from "@/components/proof/rating-summary";
 import { TestimonialsMarquee } from "@/components/ui/testimonial-v2";
 import { Reveal } from "@/components/ui/reveal";
@@ -107,23 +106,6 @@ export async function ProofSection() {
         </div>
       </Reveal>
 
-      {/* Newsletter */}
-      <Reveal>
-        <div className="mt-14 rounded-2xl bg-card p-5 ring-1 ring-gp-olive/10 sm:p-8">
-          <p className="text-xs font-semibold tracking-wide text-gp-rust uppercase">
-            {t("newsletterEyebrow")}
-          </p>
-          <h3 className="font-heading mt-2 text-2xl font-bold tracking-tight">
-            {t("newsletterTitle")}
-          </h3>
-          <p className="mt-2 max-w-xl text-muted-foreground">
-            {t("newsletterSubtitle")}
-          </p>
-          <div className="mt-5">
-            <NewsletterForm />
-          </div>
-        </div>
-      </Reveal>
     </section>
   );
 }

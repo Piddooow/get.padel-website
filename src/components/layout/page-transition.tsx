@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { routing } from "@/i18n/routing";
 import {
+  afterCover,
   beginTransition,
   ensureOverlay,
   getTransitionReason,
@@ -11,13 +13,16 @@ import {
   prefersReducedMotion,
   revealTransition,
 } from "@/lib/page-transition-overlay";
-import {
-  readScrollPosition,
-  trackScrollPosition,
-} from "@/lib/scroll-memory";
 
 /** Module scope so a dev double-mount cannot cancel the refresh restore. */
 let refreshTimer: number | null = null;
+
+const LOCALE_PREFIX = new RegExp(`^/(?:${routing.locales.join("|")})(?=/|$)`);
+
+/** Path without its locale prefix — used to detect locale-only switches. */
+function stripLocale(path: string): string {
+  return path.replace(LOCALE_PREFIX, "") || "/";
+}
 
 /**
  * Smooth page transition: internal link clicks sweep the olive curtain (the
@@ -52,6 +57,10 @@ export function PageTransition() {
       const currentPath = window.location.pathname;
       const currentHash = window.location.hash.replace(/^#/, "");
       const samePage = targetPath === currentPath;
+      // Same content, other locale (LanguageSwitcher): keep the visitor's
+      // scroll position instead of jumping back to the top of the page.
+      const localeSwitch =
+        !samePage && stripLocale(targetPath) === stripLocale(currentPath);
 
       if (samePage) {
         // In-page anchors keep the browser's smooth scrolling.
@@ -78,18 +87,20 @@ export function PageTransition() {
       // still plays the full curtain, then scrolls back to the top.
       const dropsHash = samePage && !targetHash && Boolean(currentHash);
 
-      // Navigate immediately: the route fetches while the curtain sweeps in,
-      // and the reveal starts as soon as BOTH the cover and the route are
-      // ready (never one after the other).
-      if (dropsHash) {
-        playCurtainIn();
-        window.history.pushState(null, "", targetPath);
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-        revealTransition();
-      } else {
-        playCurtainIn();
-        router.push(href);
-      }
+      // Entrance first, swap second: the curtain sweeps in completely, and
+      // only then does the route change — so the new page always appears
+      // behind the animation. The reveal follows the moment the route is
+      // committed, keeping the whole move at the same ~1.4s rhythm.
+      playCurtainIn();
+      afterCover(() => {
+        if (dropsHash) {
+          window.history.pushState(null, "", targetPath);
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          revealTransition();
+        } else {
+          router.push(href, localeSwitch ? { scroll: false } : undefined);
+        }
+      });
     };
 
     document.addEventListener("click", onClick, true);
@@ -114,11 +125,7 @@ export function PageTransition() {
     }
   }, [pathname]);
 
-  // Keep the visitor's position per page so a refresh can restore it.
-  useEffect(() => trackScrollPosition(pathname), [pathname]);
-
-  // Hard refresh: play the same curtain as menu/tab changes, restore the
-  // previous scroll position, then reveal the page.
+  // Hard refresh: play the same curtain as menu/tab changes, then reveal.
   useEffect(() => {
     const [navigationEntry] = performance.getEntriesByType(
       "navigation"
@@ -131,12 +138,8 @@ export function PageTransition() {
     if (refreshTimer) window.clearTimeout(refreshTimer);
     refreshTimer = window.setTimeout(() => {
       refreshTimer = null;
-      const savedY = readScrollPosition(window.location.pathname);
-      if (savedY > 0) {
-        window.scrollTo({ top: savedY, left: 0, behavior: "instant" });
-      }
       revealTransition();
-    }, 700);
+    }, 660);
   }, []);
 
   // The curtain lives in the DOM (outside React) — nothing to render.

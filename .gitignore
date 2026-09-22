@@ -1,20 +1,35 @@
 # dependencies
 node_modules/
 
-# next.js build output
+# next.js
 .next/
 out/
 next-env.d.ts
-*.tsbuildinfo
-
-# local database (created by `npm run db:migrate && npm run db:seed`)
-/data/
 
 # environment
 .env
 .env*.local
 
+# deploy tooling
+.vercel
+
+# research & design source assets (the app ships optimised copies in public/)
+get.padel-assets/
+instagram-assets/
+
+# project memory / agent tooling
+.ngodingpakeai/
+.ngodingpakeaiignore
+.agent/
+.claude/
+.codex/
+.cursor/
+AGENTS.md
+
+# planning docs stay local (README is tracked)
+/*.md
+!README.md
+
 # misc
 .DS_Store
-.vercel
-.env*
+*.tsbuildinfo

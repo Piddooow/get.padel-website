@@ -1,57 +1,67 @@
 /**
- * Server-side content loaders for the UI.
+ * Static content loaders (no database).
  *
- * Each loader reads the database services and falls back to the static mock
- * modules when the database is empty or unavailable — so pages always render
- * and the seeded data is what visitors actually see. Used by Server
- * Components (App Router best practice: fetch data where it is rendered).
+ * The landing page is an informational site: every loader here reads the
+ * plain-TypeScript content in `src/data/*` and returns the view shapes the UI
+ * components expect. Booking, payments, accounts and newsletter live outside
+ * the website (AYO handles court booking).
  */
-import { asc } from "drizzle-orm";
-import { db, schema } from "@/db";
 import {
-  getTestimonials,
-  type TestimonialsResponseDto,
-} from "@/lib/testimonial-service";
-import { listGalleryPhotos, type GalleryPhotoDto } from "@/lib/gallery-service";
+  courts as courtsMock,
+  type Court,
+} from "@/data/courts";
 import {
-  getBlogPost,
-  listBlogPosts,
-  type BlogPostDetailDto,
-  type BlogPostSummaryDto,
-} from "@/lib/blog-service";
-import { getSiteConfig } from "@/lib/site-config-service";
-import { getVenueDetail } from "@/lib/venue-service";
-import { listCoachingPrograms, type ProgramKind } from "@/lib/program-service";
-import { classifyEventStatus, listEvents } from "@/lib/event-service";
-import { listOpenMatches, type SpotsStatus } from "@/lib/open-match-service";
-import { listFaqs } from "@/lib/faq-service";
-import { listPromos, type LocalizedPromo } from "@/lib/promos-service";
-import { isPeakHour } from "@/lib/schedule-service";
-import { getLatestBlogPosts } from "@/data/blog-posts";
-import { courts as courtsMock, type Court } from "@/data/courts";
-import { events as eventsMock } from "@/data/events";
-import { facilities as facilitiesMock, type FacilityIcon } from "@/data/facilities";
-import { faqItems } from "@/data/faq";
+  facilities as facilitiesMock,
+  type FacilityIcon,
+} from "@/data/facilities";
+import {
+  testimonials as testimonialsMock,
+  type TestimonialSource,
+} from "@/data/testimonials";
 import { galleryPhotos as galleryMock } from "@/data/gallery";
-import { archivedPromos, promos as promosMock } from "@/data/promos";
+import { getLatestBlogPosts } from "@/data/blog-posts";
+import { faqItems } from "@/data/faq";
+import { events as eventsMock } from "@/data/events";
 import { programs as programsMock, type ProgramCta } from "@/data/programs";
-import { FIRST_HOUR, LAST_HOUR, getSlotPrice } from "@/data/pricing";
-import { testimonials as testimonialsMock } from "@/data/testimonials";
+import { archivedPromos, promos as promosMock } from "@/data/promos";
+import {
+  FIRST_HOUR,
+  LAST_HOUR,
+  getDayType,
+  getSlotPrice,
+} from "@/data/pricing";
 import { pick } from "@/data/localized";
 
-const VENUE_ID = "get-padel-jakarta";
+/* ------------------------------------------------------------ testimonials */
 
-/** Testimonials + aggregated ratings with a mock fallback. */
+export interface TestimonialView {
+  id: string;
+  author: string;
+  source: TestimonialSource;
+  rating: number;
+  period: string;
+  quote: string;
+}
+
+export interface TestimonialsResponseDto {
+  aggregate: { averageRating: number; count: number };
+  platforms: {
+    google: { score: number | null; count: number | null };
+    ayo: { score: number | null; count: number | null };
+    sub: {
+      cleanliness: number | null;
+      courtCondition: number | null;
+      communication: number | null;
+    };
+  };
+  count: number;
+  testimonials: TestimonialView[];
+}
+
+/** Curated reviews (static) with platform ratings from the source snapshot. */
 export async function loadTestimonials(
   locale: string
 ): Promise<TestimonialsResponseDto> {
-  try {
-    const data = await getTestimonials({ locale });
-    if (data.count > 0) return data;
-  } catch {
-    // fall through to the mock data
-  }
-
   return {
     aggregate: {
       averageRating:
@@ -79,15 +89,15 @@ export async function loadTestimonials(
   };
 }
 
-/** Gallery photos with a mock fallback. */
-export async function loadGallery(locale: string): Promise<GalleryPhotoDto[]> {
-  try {
-    const photos = await listGalleryPhotos({ locale });
-    if (photos.length > 0) return photos;
-  } catch {
-    // fall through to the mock data
-  }
+/* ----------------------------------------------------------------- gallery */
 
+export interface GalleryPhotoDto {
+  id: string;
+  src: string;
+  alt: string;
+}
+
+export async function loadGallery(locale: string): Promise<GalleryPhotoDto[]> {
   return galleryMock.map((photo) => ({
     id: photo.id,
     src: photo.src,
@@ -95,18 +105,27 @@ export async function loadGallery(locale: string): Promise<GalleryPhotoDto[]> {
   }));
 }
 
-/** Blog summaries (newest first) with a mock fallback. */
+/* -------------------------------------------------------------------- blog */
+
+export interface BlogPostSummaryDto {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  tag: string;
+  cover: string | null;
+  readMinutes: number;
+  publishedAt: string;
+}
+
+export interface BlogPostDetailDto extends BlogPostSummaryDto {
+  body: string[];
+}
+
 export async function loadBlogPosts(
   locale: string,
   limit = 3
 ): Promise<BlogPostSummaryDto[]> {
-  try {
-    const posts = await listBlogPosts({ locale, limit });
-    if (posts.length > 0) return posts;
-  } catch {
-    // fall through to the mock data
-  }
-
   return getLatestBlogPosts(limit).map((post) => ({
     id: post.slug,
     slug: post.slug,
@@ -119,34 +138,27 @@ export async function loadBlogPosts(
   }));
 }
 
-/** One blog post with body, with a mock fallback. */
 export async function loadBlogPost(
   locale: string,
   slug: string
 ): Promise<BlogPostDetailDto | null> {
-  try {
-    const post = await getBlogPost({ locale, slug });
-    if (post) return post;
-  } catch {
-    // fall through to the mock data
-  }
-
-  const mock = getLatestBlogPosts(20).find((post) => post.slug === slug);
-  if (!mock) return null;
+  const post = getLatestBlogPosts(20).find((item) => item.slug === slug);
+  if (!post) return null;
 
   return {
-    id: mock.slug,
-    slug: mock.slug,
-    title: pick(locale, mock.title),
-    excerpt: pick(locale, mock.excerpt),
-    tag: pick(locale, mock.tag),
-    cover: mock.cover,
-    readMinutes: mock.readMinutes,
-    publishedAt: new Date(mock.date).toISOString(),
-    body: mock.body.map((paragraph) => pick(locale, paragraph)),
+    id: post.slug,
+    slug: post.slug,
+    title: pick(locale, post.title),
+    excerpt: pick(locale, post.excerpt),
+    tag: pick(locale, post.tag),
+    cover: post.cover,
+    readMinutes: post.readMinutes,
+    publishedAt: new Date(post.date).toISOString(),
+    body: post.body.map((paragraph) => pick(locale, paragraph)),
   };
 }
 
+/* -------------------------------------------------------------- facilities */
 
 export interface FacilityView {
   id: string;
@@ -156,23 +168,7 @@ export interface FacilityView {
   official: boolean;
 }
 
-/** Facilities for the Location page, with a mock fallback. */
 export async function loadFacilities(locale: string): Promise<FacilityView[]> {
-  try {
-    const venue = await getVenueDetail(VENUE_ID);
-    if (venue && venue.facilities.length > 0) {
-      return venue.facilities.map((facility) => ({
-        id: facility.id,
-        icon: facility.icon as FacilityIcon,
-        title: locale === "en" ? facility.titleEn : facility.titleId,
-        detail: (locale === "en" ? facility.detailEn : facility.detailId) ?? undefined,
-        official: facility.official,
-      }));
-    }
-  } catch {
-    // fall through to the mock data
-  }
-
   return facilitiesMock.map((facility) => ({
     id: facility.id,
     icon: facility.icon,
@@ -182,27 +178,13 @@ export async function loadFacilities(locale: string): Promise<FacilityView[]> {
   }));
 }
 
-/** Court specs for the Location page, with a mock fallback. */
-export async function loadCourts(): Promise<Court[]> {
-  try {
-    const venue = await getVenueDetail(VENUE_ID);
-    if (venue && venue.courts.length > 0) {
-      return venue.courts.map((court) => ({
-        id: court.id,
-        name: court.name,
-        indoor: court.indoor,
-        surface: court.surface,
-        sessionMinutes: court.sessionMinutes,
-        description: "",
-        image: `/images/${court.id}.jpg`,
-      }));
-    }
-  } catch {
-    // fall through to the mock data
-  }
+/* ------------------------------------------------------------------ courts */
 
+export async function loadCourts(): Promise<Court[]> {
   return courtsMock;
 }
+
+/* ---------------------------------------------------------------- programs */
 
 export interface ProgramView {
   id: string;
@@ -216,41 +198,7 @@ export interface ProgramView {
   registrationUrl?: string | null;
 }
 
-const KIND_TO_GROUP: Record<ProgramKind, ProgramView["group"]> = {
-  private: "coaching",
-  multi_session: "coaching",
-  junior: "junior",
-  free_trial: "trial",
-};
-
-function formatIdr(value: number): string {
-  return `Rp${new Intl.NumberFormat("id-ID").format(value)}`;
-}
-
-/** Coaching programmes for the Program page, with a mock fallback. */
 export async function loadPrograms(locale: string): Promise<ProgramView[]> {
-  try {
-    const programs = await listCoachingPrograms({ locale });
-    if (programs.length > 0) {
-      return programs.map((program) => ({
-        id: program.id,
-        group: KIND_TO_GROUP[program.kind] ?? "coaching",
-        title: program.title,
-        description: program.description,
-        highlights: program.highlights,
-        priceRows: program.tiers.map((tier) => ({
-          label: tier.label,
-          value: formatIdr(tier.priceIdr ?? 0),
-        })),
-        priceNote: program.priceNote ?? undefined,
-        cta: program.ctaKind === "form" ? "form" : program.ctaKind === "ayo" ? "ayo" : "wa",
-        registrationUrl: program.registrationUrl,
-      }));
-    }
-  } catch {
-    // fall through to the mock data
-  }
-
   return programsMock.map((program) => ({
     id: program.id,
     group:
@@ -271,6 +219,8 @@ export async function loadPrograms(locale: string): Promise<ProgramView[]> {
   }));
 }
 
+/* ------------------------------------------------------------------ events */
+
 export interface EventCardView {
   id: string;
   title: string;
@@ -279,30 +229,11 @@ export interface EventCardView {
   startsAt: string | null;
 }
 
-/** Events split into upcoming/archive for the Program page, with fallback. */
+/** Events split into upcoming/archive for the Program page. */
 export async function loadEvents(
   locale: string
 ): Promise<{ upcoming: EventCardView[]; archive: EventCardView[] }> {
-  const now = new Date();
-  try {
-    const events = await listEvents({ locale });
-    if (events.length > 0) {
-      const cards = events.map((event) => ({
-        id: event.id,
-        title: event.title,
-        period: event.period,
-        description: event.description,
-        startsAt: event.startsAt,
-      }));
-      return {
-        upcoming: cards.filter((event) => event.startsAt !== null),
-        archive: cards.filter((event) => event.startsAt === null).reverse(),
-      };
-    }
-  } catch {
-    // fall through to the mock data
-  }
-
+  const now = Date.now();
   const cards: EventCardView[] = eventsMock.map((event) => ({
     id: event.id,
     title: pick(locale, event.title),
@@ -310,60 +241,17 @@ export async function loadEvents(
     description: pick(locale, event.description),
     startsAt: event.startsAt ?? null,
   }));
+
+  const isUpcoming = (card: EventCardView) =>
+    Boolean(card.startsAt) && new Date(card.startsAt as string).getTime() >= now;
+
   return {
-    upcoming: cards.filter(
-      (event) =>
-        event.startsAt &&
-        classifyEventStatus(new Date(event.startsAt), now) === "upcoming"
-    ),
-    archive: cards
-      .filter(
-        (event) =>
-          !event.startsAt ||
-          classifyEventStatus(new Date(event.startsAt), now) === "past"
-      )
-      .reverse(),
+    upcoming: cards.filter(isUpcoming),
+    archive: cards.filter((card) => !isUpcoming(card)).reverse(),
   };
 }
 
-export interface OpenMatchView {
-  id: string;
-  day: string;
-  time: string;
-  level: string;
-  courtNote: string;
-  spotsTotal: number;
-  spotsLeft: number;
-  status: SpotsStatus;
-  /** ISO datetime of the session; null until the venue announces it. */
-  startsAt: string | null;
-}
-
-/**
- * Open match sessions with live spots. Data comes from the venue-maintained
- * `open_matches` table ONLY — never fabricated in code, so the Join button can
- * be trusted to reflect real availability.
- */
-export async function loadOpenMatches(
-  locale: string
-): Promise<OpenMatchView[]> {
-  try {
-    const matches = await listOpenMatches({ locale });
-    return matches.map((match) => ({
-      id: match.id,
-      day: match.day,
-      time: match.time,
-      level: match.level,
-      courtNote: match.courtNote,
-      spotsTotal: match.spotsTotal,
-      spotsLeft: match.spotsLeft,
-      status: match.status,
-      startsAt: match.startsAt,
-    }));
-  } catch {
-    return [];
-  }
-}
+/* --------------------------------------------------------------------- FAQ */
 
 export interface FaqView {
   id: string;
@@ -371,15 +259,7 @@ export interface FaqView {
   answer: string;
 }
 
-/** FAQ entries for the Location and Help pages, with a mock fallback. */
 export async function loadFaqs(locale: string): Promise<FaqView[]> {
-  try {
-    const faqs = await listFaqs({ locale });
-    if (faqs.length > 0) return faqs;
-  } catch {
-    // fall through to the mock data
-  }
-
   return faqItems.map((item) => ({
     id: item.id,
     question: pick(locale, item.question),
@@ -387,6 +267,7 @@ export async function loadFaqs(locale: string): Promise<FaqView[]> {
   }));
 }
 
+/* ------------------------------------------------------------------- venue */
 
 export interface VenueProfile {
   name: string;
@@ -423,48 +304,8 @@ export interface VenueProfile {
   };
 }
 
-const CONTACT_FALLBACK: VenueProfile["contact"] = {
-  whatsapp: "6281188022770",
-  whatsappDisplay: "0811 8802 2770",
-  emailEvent: "getpadelcourt@gmail.com",
-  emailCommercial: "getpadeljakarta@gmail.com",
-  instagramUrl: "https://www.instagram.com/get.padel/",
-  tiktokUrl: "https://www.tiktok.com/@get.padel",
-  cafeInstagramUrl: "https://www.instagram.com/racerallycoffee/",
-};
-
-/** Venue identity, hours, ratings and contacts with a static fallback. */
+/** Venue identity, hours, ratings and contacts (static source of truth). */
 export async function loadVenueProfile(): Promise<VenueProfile> {
-  try {
-    const config = await getSiteConfig();
-    if (config) {
-      return {
-        name: config.venue.name,
-        tagline: config.venue.tagline,
-        address: {
-          street: config.address.street,
-          district: config.address.district,
-          city: config.address.city,
-          plusCode: config.address.plusCode,
-        },
-        hours: {
-          courtsOpenHour: config.hours.courtsOpenHour,
-          courtsCloseHour: config.hours.courtsCloseHour,
-          cafeOpenHour: config.hours.cafeOpenHour,
-          cafeCloseHour: config.hours.cafeCloseHour,
-        },
-        ratings: config.ratings ?? {
-          google: { score: null, count: null },
-          ayo: { score: null, count: null },
-          sub: { cleanliness: null, courtCondition: null, communication: null },
-        },
-        contact: config.contact,
-      };
-    }
-  } catch {
-    // fall through to the static data
-  }
-
   return {
     name: "Get Padel Jakarta",
     tagline: "Get Padel, Get Well",
@@ -485,10 +326,19 @@ export async function loadVenueProfile(): Promise<VenueProfile> {
       ayo: { score: 4.95, count: 180 },
       sub: { cleanliness: 4.94, courtCondition: 4.94, communication: 4.93 },
     },
-    contact: CONTACT_FALLBACK,
+    contact: {
+      whatsapp: "6281188022770",
+      whatsappDisplay: "0811 8802 2770",
+      emailEvent: "getpadelcourt@gmail.com",
+      emailCommercial: "getpadeljakarta@gmail.com",
+      instagramUrl: "https://www.instagram.com/get.padel/",
+      tiktokUrl: "https://www.tiktok.com/@get.padel",
+      cafeInstagramUrl: "https://www.instagram.com/racerallycoffee/",
+    },
   };
 }
 
+/* ----------------------------------------------------------------- pricing */
 
 export interface RateRow {
   hour: number;
@@ -502,45 +352,21 @@ export interface RateCardView {
   weekend: RateRow[];
 }
 
-const SAMPLE_DATES = { weekday: "2026-09-21", weekend: "2026-09-26" } as const;
-
-/** Peak/off-peak rate card rows from the DB, with a mock fallback. */
-export async function loadRateCard(): Promise<RateCardView> {
-  try {
-    const rows = await db
-      .select()
-      .from(schema.pricingRules)
-      .orderBy(asc(schema.pricingRules.hour));
-    if (rows.length > 0) {
-      const build = (dayType: "weekday" | "weekend"): RateRow[] =>
-        rows
-          .filter((row) => row.dayType === dayType)
-          .map((row) => ({
-            hour: row.hour,
-            price: row.price,
-            strike: row.strikePrice,
-            peak: row.isPeak,
-          }));
-      const weekday = build("weekday");
-      const weekend = build("weekend");
-      if (weekday.length > 0 && weekend.length > 0) {
-        return { weekday, weekend };
-      }
-    }
-  } catch {
-    // fall through to the static rate card
+function rateRowsFor(dayType: "weekday" | "weekend", dateISO: string): RateRow[] {
+  const rows: RateRow[] = [];
+  for (let hour = FIRST_HOUR; hour <= LAST_HOUR; hour++) {
+    const { price, strike } = getSlotPrice(dateISO, hour);
+    rows.push({ hour, price, strike, peak: hour >= 18 });
   }
+  return rows;
+}
 
-  const build = (dayType: "weekday" | "weekend"): RateRow[] =>
-    Array.from(
-      { length: LAST_HOUR - FIRST_HOUR + 1 },
-      (_, index) => FIRST_HOUR + index
-    ).map((hour) => {
-      const { price, strike } = getSlotPrice(SAMPLE_DATES[dayType], hour);
-      return { hour, price, strike, peak: isPeakHour(dayType, hour) };
-    });
-
-  return { weekday: build("weekday"), weekend: build("weekend") };
+/** Informational rate card for both day types (from the static rate rules). */
+export async function loadRateCard(): Promise<RateCardView> {
+  // A representative Monday and Saturday keep the card stable every day.
+  const weekday = rateRowsFor("weekday", "2026-01-05");
+  const weekend = rateRowsFor("weekend", "2026-01-10");
+  return { weekday, weekend };
 }
 
 export interface TierRow {
@@ -548,30 +374,26 @@ export interface TierRow {
   strike: number;
 }
 
-/** Up to three distinct price tiers per day type (ascending price). */
+/** Three headline tiers per day type (info only; final price on AYO). */
 export async function loadPricingTiers(): Promise<{
   weekday: TierRow[];
   weekend: TierRow[];
 }> {
-  const card = await loadRateCard();
-
-  const tiersOf = (rows: RateRow[]): TierRow[] => {
-    const seen = new Map<number, TierRow>();
-    for (const row of rows) {
-      if (!seen.has(row.price)) {
-        seen.set(row.price, { price: row.price, strike: row.strike });
-      }
-    }
-    return [...seen.values()]
-      .sort((a, b) => a.price - b.price)
-      .slice(0, 3);
-  };
-
   return {
-    weekday: tiersOf(card.weekday),
-    weekend: tiersOf(card.weekend),
+    weekday: [
+      { price: 150_000, strike: 225_000 },
+      { price: 180_000, strike: 225_000 },
+      { price: 260_000, strike: 300_000 },
+    ],
+    weekend: [
+      { price: 200_000, strike: 330_000 },
+      { price: 250_000, strike: 330_000 },
+      { price: 260_000, strike: 300_000 },
+    ],
   };
 }
+
+/* ------------------------------------------------------------------- promos */
 
 export interface PromoView {
   id: string;
@@ -582,36 +404,23 @@ export interface PromoView {
   source: string | null;
   link: string | null;
   reference: string | null;
-  /** Promo aktif DAN masih di dalam periode berlaku. */
+  poster?: string;
   isRunning: boolean;
+  /** Structured validity window (YYYY-MM-DD); null = open ended. */
+  startsOn: string | null;
+  endsOn: string | null;
 }
 
-/** Promos (running + archive) from the DB, with a mock fallback. */
-export async function loadPromos(locale: string): Promise<PromoView[]> {
-  try {
-    const rows = await listPromos({
-      includeExpired: true,
-      locale: locale === "en" ? "en" : "id",
-    });
-    if (rows.length > 0) {
-      return rows.map((promo: LocalizedPromo) => ({
-        id: promo.id,
-        title: promo.title,
-        period: promo.period,
-        detail: promo.detail,
-        code: promo.code,
-        source: promo.source,
-        link: promo.linkUrl,
-        reference: promo.reference,
-        isRunning: promo.active,
-      }));
-    }
-  } catch {
-    // fall through to the mock data
-  }
+function isPromoRunning(startsOn?: string, endsOn?: string): boolean {
+  const today = new Date().toISOString().slice(0, 10);
+  if (startsOn && today < startsOn) return false;
+  if (endsOn && today > endsOn) return false;
+  return true;
+}
 
-  const todayISO = new Date().toISOString().slice(0, 10);
-  return [...promosMock, ...archivedPromos].map((promo) => ({
+/** Active promotions first, then the archive (never shown as running). */
+export async function loadPromos(locale: string): Promise<PromoView[]> {
+  const map = (promo: (typeof promosMock)[number], archived: boolean): PromoView => ({
     id: promo.id,
     title: pick(locale, promo.title),
     period: pick(locale, promo.period),
@@ -620,9 +429,16 @@ export async function loadPromos(locale: string): Promise<PromoView[]> {
     source: promo.source ?? null,
     link: promo.link ?? null,
     reference: promo.reference ?? null,
-    isRunning:
-      !promo.archived &&
-      (!promo.endsOn || promo.endsOn >= todayISO) &&
-      (!promo.startsOn || promo.startsOn <= todayISO),
-  }));
+    poster: promo.poster,
+    isRunning: !archived && isPromoRunning(promo.startsOn, promo.endsOn),
+    startsOn: promo.startsOn ?? null,
+    endsOn: promo.endsOn ?? null,
+  });
+
+  return [
+    ...promosMock.filter((p) => !p.archived).map((p) => map(p, false)),
+    ...archivedPromos.map((p) => map(p, true)),
+  ];
 }
+
+export { getDayType };

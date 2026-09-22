@@ -165,25 +165,50 @@ export const LimelightNav = ({
       aria-label={ariaLabel}
       className={`relative inline-flex h-14 items-center overflow-hidden rounded-full border border-gp-olive/10 bg-card/95 px-3 text-gp-olive shadow-lg shadow-gp-olive/10 backdrop-blur-md md:h-16 md:px-4 ${className ?? ""}`}
     >
-      {items.map(({ id, icon, label, href, onClick }, index) => (
-        <Link
-          key={id}
-          ref={(el: HTMLAnchorElement | null) => {
-            navItemRefs.current[index] = el;
-          }}
-          href={href ?? "#"}
-          className={`relative z-20 flex h-full cursor-pointer items-center justify-center p-4 transition-opacity duration-150 ease-out active:opacity-70 md:p-5 ${iconContainerClassName ?? ""}`}
-          onClick={() => handleItemClick(index, onClick)}
-          aria-label={label}
-          aria-current={hasActive && activeIndex === index ? "page" : undefined}
-        >
-          {cloneElement(icon, {
-            className: `size-5 transition-opacity duration-100 ease-in-out md:size-6 ${
-              hasActive && activeIndex === index ? "opacity-100" : "opacity-40"
-            } ${icon.props.className ?? ""} ${iconClassName ?? ""}`,
-          })}
-        </Link>
-      ))}
+      {items.map(({ id, icon, label, href, onClick }, index) => {
+        const isExternal = (href ?? "").startsWith("http");
+        const className = `relative z-20 flex h-full cursor-pointer items-center justify-center p-4 transition-opacity duration-150 ease-out active:opacity-70 md:p-5 ${iconContainerClassName ?? ""}`;
+        const content = cloneElement(icon, {
+          className: `size-5 transition-opacity duration-100 ease-in-out md:size-6 ${
+            hasActive && activeIndex === index ? "opacity-100" : "opacity-40"
+          } ${icon.props.className ?? ""} ${iconClassName ?? ""}`,
+        });
+
+        if (isExternal) {
+          return (
+            <a
+              key={id}
+              ref={(el: HTMLAnchorElement | null) => {
+                navItemRefs.current[index] = el;
+              }}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={className}
+              onClick={() => handleItemClick(index, onClick)}
+              aria-label={label}
+            >
+              {content}
+            </a>
+          );
+        }
+
+        return (
+          <Link
+            key={id}
+            ref={(el: HTMLAnchorElement | null) => {
+              navItemRefs.current[index] = el;
+            }}
+            href={href ?? "#"}
+            className={className}
+            onClick={() => handleItemClick(index, onClick)}
+            aria-label={label}
+            aria-current={hasActive && activeIndex === index ? "page" : undefined}
+          >
+            {content}
+          </Link>
+        );
+      })}
 
       <div
         ref={limelightRef}

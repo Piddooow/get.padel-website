@@ -49,7 +49,7 @@ export function CopyButton({
       disabled={copied}
       aria-label={copied ? copiedLabel : restingLabel}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-100",
+        "inline-flex min-h-11 items-center gap-1.5 rounded-full border px-4 text-xs font-semibold transition-colors disabled:opacity-100",
         copied
           ? "border-emerald-600/40 bg-emerald-600/10 text-emerald-700"
           : "border-gp-olive/25 text-gp-olive hover:bg-gp-olive/5",

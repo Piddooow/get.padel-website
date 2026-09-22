@@ -44,8 +44,8 @@ export const programs: Program[] = [
       en: "Multi-Session Private Coaching",
     },
     description: {
-      id: "Paket 5 sesi coaching privat — maksimal 2 orang per jam, termasuk court, certified coach, dan bola. Valid 1 bulan.",
-      en: "Five-session private coaching package — max 2 players per hour, including court, certified coach and balls. Valid for one month.",
+      id: "Paket 5 sesi coaching privat, maksimal 2 orang per jam, termasuk court, certified coach, dan bola. Valid 1 bulan.",
+      en: "Five-session private coaching package, max 2 players per hour, including court, certified coach and balls. Valid for one month.",
     },
     highlights: [
       {
@@ -85,8 +85,8 @@ export const programs: Program[] = [
       en: "Private Coaching",
     },
     description: {
-      id: "Sesi privat dengan certified coach untuk semua level — dari pemula sampai pemain kompetitif. Jadwal & harga mengikuti ketersediaan coach.",
-      en: "Private sessions with a certified coach for every level — from beginners to competitive players. Schedule & price follow coach availability.",
+      id: "Sesi privat dengan certified coach untuk semua level, dari pemula sampai pemain kompetitif. Jadwal dan harga mengikuti ketersediaan coach.",
+      en: "Private sessions with a certified coach for every level, from beginners to competitive players. Schedule and price follow coach availability.",
     },
     highlights: [
       {
@@ -116,8 +116,8 @@ export const programs: Program[] = [
       en: "Junior Class Ages 6–9 & 10–13",
     },
     description: {
-      id: "Kelas padel untuk anak dengan certified coach. Fokus pada dasar permainan, koordinasi, dan keseruan — termasuk raket anak.",
-      en: "Kids padel classes with a certified coach — game basics, coordination and fun, with kids' rackets included.",
+      id: "Kelas padel untuk anak dengan certified coach. Fokus pada dasar permainan, koordinasi, dan keseruan, termasuk raket anak.",
+      en: "Kids padel classes with a certified coach, covering game basics, coordination and fun, with kids' rackets included.",
     },
     highlights: [
       {
@@ -147,8 +147,8 @@ export const programs: Program[] = [
       en: "Free Trial",
     },
     description: {
-      id: "Belum pernah main padel? Coba gratis dulu — padel fever sudah datang dan slot free trial menunggumu. Kuota terbatas.",
-      en: "Never played padel? Try it for free first — padel fever has arrived and a free-trial slot is waiting. Limited spots.",
+      id: "Belum pernah main padel? Coba gratis dulu. Padel fever sudah datang dan slot free trial menunggumu. Kuota terbatas.",
+      en: "Never played padel? Try it for free first. Padel fever has arrived and a free-trial slot is waiting. Limited spots.",
     },
     highlights: [
       {

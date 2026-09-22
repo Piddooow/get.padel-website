@@ -27,12 +27,12 @@ export const helpTopics: HelpTopic[] = [
   {
     id: "schedule",
     icon: "calendar",
-    title: { id: "Cek jadwal & slot kosong", en: "Check the schedule & open slots" },
+    title: { id: "Cek slot & booking", en: "Check slots & book" },
     description: {
-      id: "Lihat slot tersedia hari ini, besok, atau akhir pekan.",
-      en: "See available slots for today, tomorrow, or the weekend.",
+      id: "Semua ketersediaan dan booking lapangan diproses di kanal resmi AYO.",
+      en: "All availability and court booking is handled on the official AYO channel.",
     },
-    route: "/jadwal",
+    route: "/harga",
   },
   {
     id: "pricing",

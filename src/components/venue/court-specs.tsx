@@ -66,7 +66,7 @@ export async function CourtSpecs({ courts }: { courts: Court[] }) {
               <div className="mt-5 flex flex-wrap gap-3">
                 {/* Both CTAs share one style so the pair reads consistently. */}
                 <ButtonLink
-                  href="/jadwal"
+                  href={site.links.ayo}
                   variant="outline"
                   size="lg"
                   className="rounded-full border-gp-olive/25 px-4 font-semibold text-gp-olive hover:bg-gp-olive/5"

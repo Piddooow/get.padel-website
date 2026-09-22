@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import { HeaderProfile } from "@/components/auth/header-profile";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { WhatsAppIcon } from "@/components/icons";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -179,7 +178,7 @@ export function SiteHeader() {
                   // Same pill language as the switcher/CTA: full radius + a
                   // border that appears on hover/focus. Only real pages keep
                   // the active border; pressed items flash a soft animation.
-                  "rounded-full border px-2 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-gp-light/60 focus-visible:outline-none xl:px-3.5",
+                  "inline-flex h-11 items-center rounded-full border px-3 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-gp-light/60 focus-visible:outline-none xl:px-4",
                   isActive(item)
                     ? "border-gp-light/25 bg-white/10 text-gp-light"
                     : "border-transparent text-gp-light/80 hover:border-gp-light/20 hover:bg-white/10 hover:text-gp-light",
@@ -198,17 +197,16 @@ export function SiteHeader() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t("common.whatsapp")}
-              className="hidden size-9 shrink-0 items-center justify-center rounded-full border border-gp-light/25 text-gp-light/85 transition-colors hover:border-gp-light/40 hover:bg-white/10 hover:text-gp-light focus-visible:ring-2 focus-visible:ring-gp-light/60 focus-visible:outline-none lg:inline-flex"
+              className="hidden size-11 shrink-0 items-center justify-center rounded-full border border-gp-light/25 text-gp-light/85 transition-colors hover:border-gp-light/40 hover:bg-white/10 hover:text-gp-light focus-visible:ring-2 focus-visible:ring-gp-light/60 focus-visible:outline-none xl:inline-flex"
             >
               <WhatsAppIcon className="size-4" />
             </a>
-            <HeaderProfile />
             <LanguageSwitcher className="inline-flex" />
             <ButtonLink
               href={bookHref}
               external
               size="lg"
-              className="hidden rounded-full px-5 font-semibold sm:inline-flex"
+              className="hidden rounded-full px-5 font-semibold xl:inline-flex"
             >
               {t("common.bookNow")}
             </ButtonLink>
