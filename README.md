@@ -10,65 +10,52 @@ Live Website
 
 https://get-padel-website.vercel.app/en
 
+
 About
 
-Get Padel Jakarta offers two indoor padel courts for casual games, training sessions, and community play. The venue also includes Race & Rally Coffee, giving players a place to prepare before a match or recharge afterward.
+Get Padel Jakarta provides two indoor padel courts for casual games, training sessions, and community play. The venue also features Race & Rally Coffee, where players can prepare before a match or take a break after playing.
 
-Website Coverage
 
-Venue information, facilities, and location details.
+Website Features:
 
-Court schedule and official AYO booking access.
+* Venue information, facilities, and location details.
 
-Pricing, promotions, racket rental, and player services.
+* Court schedules and booking access through the official AYO channel.
 
-Community programs, events, and junior classes.
+* Pricing, promotions, racket rental, and player services.
 
-Race & Rally Coffee information.
+* Community programs, events, and junior classes.
 
-Player reviews, gallery, padel tips, and venue updates.
+* Race & Rally Coffee information.
 
-Contact details and WhatsApp support.
+* Player reviews, venue gallery, padel tips, and updates.
 
-Venue Information
+* Contact information and WhatsApp support.
 
-Detail
 
-Information
+Venue Details:
 
-Location
+Location: Pondok Kelapa, East Jakarta.
 
-Pondok Kelapa, East Jakarta
+Courts: Two indoor padel courts.
 
-Courts
+Session duration: 60 minutes per session.
 
-2 indoor padel courts
+Court hours: Daily, 06:00 to 22:00.
 
-Court sessions
+Booking channel: Official AYO channel.
 
-60 minutes per session
+Coffee shop: Race & Rally Coffee.
 
-Court hours
+Coffee shop hours: Daily, 07:00 to 22:00.
 
-Daily, 06:00 to 22:00
 
-Booking channel
-
-Official AYO channel
-
-Coffee shop
-
-Race & Rally Coffee
-
-Coffee shop hours
-
-Daily, 07:00 to 22:00
-
-Booking
+Booking:
 
 All court bookings are completed through the official AYO channel.
 
-https://ayo.co.id/v/get-padel-jakarta
+Book a Court on AYO!!
+
 
 Contact
 
@@ -76,9 +63,12 @@ Get Padel Jakarta
 Billy Moon Blok L V/9, Jl. Raya Kalimalang
 Pondok Kelapa, Duren Sawit, East Jakarta 13450
 
-WhatsApp: https://wa.me/6281188022770
-Instagram: https://instagram.com/get.padel
-TikTok: https://tiktok.com/@get.padel
+WhatsApp
+
+Instagram
+
+TikTok
+
 
 License
 
