@@ -151,7 +151,7 @@
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
-  padding: clamp(5rem, 11vh, 7.5rem) clamp(1.25rem, 2.6vw, 2.25rem)
+  padding: clamp(5.5rem, 11vh, 7.5rem) clamp(1.25rem, 2.6vw, 2.25rem)
     clamp(1.5rem, 4vh, 2.5rem);
 }
 
@@ -164,6 +164,7 @@
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: rgba(231, 231, 231, 0.6);
 }
 
@@ -343,7 +344,7 @@
   }
 
   .menu-content-wrapper {
-    padding: 5rem 1.4rem 1.6rem;
+    padding: 5.5rem 1.4rem 1.6rem;
   }
 
   .nav-link-text {
@@ -462,7 +463,9 @@
 
 @media (max-height: 860px) {
   .menu-content-wrapper {
-    padding-top: clamp(3.5rem, 8.5vh, 5rem);
+    /* Never less than the sticky header (72 to 80px) plus a small gap, so the
+       tagline and first item are never hidden behind it. */
+    padding-top: clamp(5.5rem, 9vh, 6.5rem);
     padding-bottom: 1.25rem;
   }
 

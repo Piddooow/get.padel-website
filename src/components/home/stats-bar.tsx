@@ -24,7 +24,7 @@ export async function StatsBar() {
       {STAT_KEYS.map((key, index) => (
         <div
           key={key}
-          className="animate-in fade-in slide-in-from-bottom-2 flex flex-col gap-1 bg-[#fefefe] px-4 py-5 duration-700 sm:px-5"
+          className="animate-in fade-in slide-in-from-bottom-2 flex flex-col gap-1 bg-gp-light px-4 py-5 duration-700 sm:px-5"
           style={{ animationDelay: `${index * 100}ms` }}
         >
           <dt className="order-2 flex items-center gap-1.5 text-xs font-semibold tracking-wide text-gp-olive/80 uppercase">
